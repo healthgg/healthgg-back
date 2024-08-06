@@ -8,7 +8,7 @@ import { Server } from 'socket.io';
 
 @WebSocketGateway({
   cors: {
-    origin: 'http://localhost:5173', // 허용할 도메인 설정
+    origin: '*', // 허용할 도메인 설정
     methods: ['GET', 'POST'],
   },
 })
@@ -21,8 +21,12 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect {
   handleConnection(client: any, ...args: any[]): number {
     this.clientsCount++;
     this.server.emit('clientsCount', this.clientsCount);
-    console.log(this.server);
-    console.log(`Client connected: ${client.id}`);
+    console.log(this.server.adapter());
+    console.log(`Client connected: ${client}`);
+    return this.clientsCount;
+  }
+
+  getConnettions() {
     return this.clientsCount;
   }
 
