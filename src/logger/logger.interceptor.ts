@@ -28,7 +28,7 @@ export class LoggingInterceptor implements NestInterceptor {
         const { statusCode } = response;
         const contentLength = response.get('content-length');
 
-        const logMessage = `요청 메서드: ${method} 요청엔드포인트: ${originalUrl} 응답코드: ${statusCode} ${contentLength} - ${userAgent} ip주소: ${ip} ${Date.now() - currnetTime}ms `;
+        const logMessage = `요청날짜: ${now} 요청시간: ${currnetTime} 요청 메서드: ${method} 요청엔드포인트: ${originalUrl} 응답코드: ${statusCode} ${contentLength} - ${userAgent} ip주소: ${ip} ${Date.now() - currnetTime}ms `;
 
         const logFolder = path.join(__dirname, '../', 'log');
 

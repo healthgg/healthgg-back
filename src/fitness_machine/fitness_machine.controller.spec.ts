@@ -1,5 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { FitnessMachineController } from './fitness-machine.controller';
+import { FitnessMachineController } from './fitness_machine.controller';
 
 describe('FitnessMachineController', () => {
   let controller: FitnessMachineController;
