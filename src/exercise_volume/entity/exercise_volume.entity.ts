@@ -7,30 +7,30 @@ import {
   ManyToOne,
   PrimaryColumn,
 } from 'typeorm';
+import { IExercise_volume } from '../interface/exercise_volume.interface';
 
 @Entity('exercise_volume')
-export class ExerciseVolumeModel {
-  @PrimaryColumn()
+export class ExerciseVolumeModel implements IExercise_volume {
+  @PrimaryColumn({ comment: '운동 볼륨 ID' })
   volume_id: number;
 
-  @Column()
   @ManyToOne(
     () => FitnessMachineModel,
-    (fitenessmachine) => fitenessmachine.fitness_machine_id,
+    (fitnessMachine) => fitnessMachine.exercise_volume,
   )
-  @JoinColumn()
-  fitness_machine_id: number;
+  @JoinColumn({ name: 'fitness_machine_id' }) // 외래 키 이름을 명시적으로 지정
+  fitness_machine: FitnessMachineModel;
 
-  @Column()
+  @Column({ type: 'int', unsigned: true, comment: '반복 횟수' })
   repetition: number;
 
-  @Column()
+  @Column({ type: 'int', unsigned: true, comment: '세트 수' })
   set: number;
 
-  @Column()
+  @Column('decimal', { precision: 10, scale: 1, comment: '수행 중량' })
   weight: number;
 
-  @Column()
+  @Column('decimal', { precision: 10, scale: 1, comment: '횟수 x 세트 x 중량' })
   total_weight: number;
 
   @CreateDateColumn({ type: 'timestamp' })

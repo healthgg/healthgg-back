@@ -4,7 +4,7 @@ import { EventsGateway } from './gateway/events.gateway';
 import { WebSocketServer } from '@nestjs/websockets';
 import { Server } from 'http';
 
-@Controller()
+@Controller('main')
 export class AppController {
   @WebSocketServer()
   server: Server;
