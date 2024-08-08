@@ -32,7 +32,7 @@ services:
       DATABASE_USER: root
       DATABASE_PASSWORD: my-secret-pw
       DATABASE_NAME: mydatabase
-      NODE_ENV: dev
+      NODE_ENV: production
       REDIS_HOST: redis
       REDIS_PORT: 6379
     ports:

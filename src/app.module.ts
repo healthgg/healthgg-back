@@ -9,6 +9,11 @@ import { BodyPartModule } from './body_part/body_part.module';
 import { FoodModule } from './food/food.module';
 import { NutrientModule } from './nutrient/nutrient.module';
 import { ExerciseVolumeModule } from './exercise_volume/exercise_volume.module';
+import { FitnessMachineModel } from './fitness_machine/entity/fitness_machine.entity';
+import { foodModel } from './food/entity/food.entity';
+import { nutrientModel } from './nutrient/entity/nutrient.entity';
+import { ExerciseVolumeModel } from './exercise_volume/entity/exercise_volume.entity';
+import { BodyPartModel } from './body_part/entity/body_part.entity';
 
 @Module({
   imports: [
@@ -30,6 +35,13 @@ import { ExerciseVolumeModule } from './exercise_volume/exercise_volume.module';
     FoodModule,
     NutrientModule,
     ExerciseVolumeModule,
+    // TypeOrmModule.forFeature([
+    //   FitnessMachineModel,
+    //   foodModel,
+    //   nutrientModel,
+    //   ExerciseVolumeModel,
+    //   BodyPartModel,
+    // ]),
   ],
   controllers: [AppController],
   providers: [AppService, EventsGateway],
