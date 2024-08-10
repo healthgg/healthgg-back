@@ -12,7 +12,7 @@ export class FitnessMachineService {
   ) {}
 
   async getFitnessMachineList(type: number): Promise<IFitnessMachine[]> {
-    if (type <= 6) throw new BadRequestException('잘못된 요청');
+    if (type >= 6) throw new BadRequestException('존재하지 않는 운동부위');
 
     const fitnessMachineList = await this.fitnessMachineRepository.find({
       where: {
