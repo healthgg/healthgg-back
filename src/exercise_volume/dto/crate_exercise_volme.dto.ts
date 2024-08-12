@@ -12,9 +12,9 @@ export class PostExerciseVolmeDto extends ExerciseVolumeModel {
   @IsOptional()
   volume_id: number;
 
-  // @IsInt()
-  // @Min(5)
-  // @IsNotEmpty()
+  @IsInt()
+  //@Min(5)
+  @IsNotEmpty()
   fitness_machine_id: number;
 
   // @IsInt()

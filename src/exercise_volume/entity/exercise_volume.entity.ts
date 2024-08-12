@@ -15,6 +15,9 @@ export class ExerciseVolumeModel implements IExercise_volume {
   @PrimaryGeneratedColumn({ comment: '운동 볼륨 ID' })
   volume_id: number;
 
+  @Column({ comment: '헬스 기구 ID' })
+  fitness_machine_id: number;
+
   @ManyToOne(
     () => FitnessMachineModel,
     (fitnessMachine) => fitnessMachine.exercise_volume,

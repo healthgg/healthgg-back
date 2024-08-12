@@ -12,54 +12,23 @@ export class ExerciseVolumeService {
     private readonly exerciseVolumeRepository: Repository<ExerciseVolumeModel>,
   ) {}
 
+  async getExerciseVolmes() {
+    return await this.exerciseVolumeRepository.find();
+  }
+
+  async getExerciseVolmesId(post_id) {
+    return await this.exerciseVolumeRepository.findBy({ post_id });
+  }
+
   async postExerciseVolmes(body) {
-    const data = [
-      {
-        fitness_machine_id: 123,
-        repetition: 20,
-        set: 4,
-        weight: 200,
-        total_weight: 3000,
-        post_id: '73ce6b19ffbb74e6bfbbb77c3a589688',
-      },
-      {
-        fitness_machine_id: 1,
-        repetition: 20,
-        set: 4,
-        weight: 200,
-        total_weight: 3000,
-        post_id: '73ce6b19ffbb74e6bfbbb77c3a589688',
-      },
-      {
-        fitness_machine_id: 3,
-        repetition: 20,
-        set: 4,
-        weight: 200,
-        total_weight: 3000,
-        post_id: '73ce6b19ffbb74e6bfbbb77c3a589688',
-      },
-      {
-        fitness_machine_id: 2,
-        reptition: 20,
-        set: 4,
-        weight: 200,
-        total_weight: 3000,
-        post_id: '73ce6b19ffbb74e6bfbbb77c3a589688',
-      },
-    ];
-    // const post_id: string = generateRandomString(16);
-
-    // const data = body.map((e) => ({
-    //   ...e,
-    //   post_id,
-    // }));
-
-    // console.log(data);
+    const post_id: string = generateRandomString(16);
+    const data = body.map((e) => ({
+      ...e,
+      post_id,
+    }));
 
     const newEntity = this.exerciseVolumeRepository.create(data);
-
-    console.log(newEntity);
-    const b = await this.exerciseVolumeRepository.save(newEntity);
+    await this.exerciseVolumeRepository.save(newEntity);
   }
 
   async generateExcel(data) {

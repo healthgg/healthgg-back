@@ -1,4 +1,4 @@
-import { Body, Controller, Post, Res } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Res } from '@nestjs/common';
 import { ExerciseVolumeService } from './exercise_volume.service';
 import {
   PostExerciseVolmeDto,
@@ -9,11 +9,16 @@ import {
 export class ExerciseVolumeController {
   constructor(private readonly exerciseVolumeService: ExerciseVolumeService) {}
 
+  @Get(':post_id')
+  async getExerciseVolmes(@Param('post_id') post_id: string) {
+    return {
+      data: await this.exerciseVolumeService.getExerciseVolmesId(post_id),
+    };
+  }
+
   @Post('share')
   async postExerciseVolmes(@Body() body: PostExerciseVolumeArrayDto) {
-    const a = await this.exerciseVolumeService.postExerciseVolmes(body.data);
-
-    return;
+    return await this.exerciseVolumeService.postExerciseVolmes(body.data);
   }
 
   @Post('execel')
