@@ -3,6 +3,7 @@ import { FitnessMachineModel } from './entity/fitness_machine.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { IFitnessMachine } from './interface/fitness_machine.interface';
+import { BodyPartEnum } from 'src/body_part/enum/body_part.enum';
 
 @Injectable()
 export class FitnessMachineService {
@@ -12,8 +13,9 @@ export class FitnessMachineService {
   ) {}
 
   async getFitnessMachineList(type: number): Promise<IFitnessMachine[]> {
-    if (type <= 6) throw new BadRequestException('잘못된 요청');
-
+    if (!Object.values(BodyPartEnum).includes(type)) {
+      throw new BadRequestException('존재하지 않는 운동부위');
+    }
     const fitnessMachineList = await this.fitnessMachineRepository.find({
       where: {
         body_part: {

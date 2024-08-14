@@ -1,6 +1,4 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { EventsGateway } from './gateway/events.gateway';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
@@ -9,15 +7,13 @@ import { BodyPartModule } from './body_part/body_part.module';
 import { FoodModule } from './food/food.module';
 import { NutrientModule } from './nutrient/nutrient.module';
 import { ExerciseVolumeModule } from './exercise_volume/exercise_volume.module';
-import { FitnessMachineModel } from './fitness_machine/entity/fitness_machine.entity';
-import { foodModel } from './food/entity/food.entity';
-import { nutrientModel } from './nutrient/entity/nutrient.entity';
-import { ExerciseVolumeModel } from './exercise_volume/entity/exercise_volume.entity';
-import { BodyPartModel } from './body_part/entity/body_part.entity';
+import { ExerciseVolumeController } from './exercise_volume/exercise_volume.controller';
+import { MainModule } from './main/main.module';
+//import { RedisModule } from '@liaoliaots/nestjs-redis';
 
 @Module({
   imports: [
-    ConfigModule.forRoot(),
+    // CacheModule.registerAsync({ isGlobal: true, useClass: CacheConfigService }),
     TypeOrmModule.forRoot({
       type: 'mysql',
       host: process.env.DATABASE_HOST,
@@ -35,6 +31,15 @@ import { BodyPartModel } from './body_part/entity/body_part.entity';
     FoodModule,
     NutrientModule,
     ExerciseVolumeModule,
+    MainModule,
+    // RedisModule.forRoot({
+    //   readyLog: true,
+    //   config: {
+    //     host: 'my-redis',
+    //     port: 6379,
+    //     //   password: 'bitnami'
+    //   },
+    //}),
     // TypeOrmModule.forFeature([
     //   FitnessMachineModel,
     //   foodModel,
@@ -43,7 +48,7 @@ import { BodyPartModel } from './body_part/entity/body_part.entity';
     //   BodyPartModel,
     // ]),
   ],
-  controllers: [AppController],
-  providers: [AppService, EventsGateway],
+  controllers: [],
+  providers: [EventsGateway],
 })
 export class AppModule {}

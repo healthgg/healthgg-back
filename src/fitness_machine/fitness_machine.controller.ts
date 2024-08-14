@@ -2,7 +2,7 @@ import { Controller, Get, Param, ParseIntPipe } from '@nestjs/common';
 import { FitnessMachineService } from './fitness_machine.service';
 import { IFitnessMachine } from './interface/fitness_machine.interface';
 
-@Controller('fitness-machine')
+@Controller('fitness_machine')
 export class FitnessMachineController {
   constructor(private readonly fitnessService: FitnessMachineService) {}
 

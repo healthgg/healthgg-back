@@ -6,13 +6,17 @@ import {
   JoinColumn,
   ManyToOne,
   PrimaryColumn,
+  PrimaryGeneratedColumn,
 } from 'typeorm';
 import { IExercise_volume } from '../interface/exercise_volume.interface';
 
 @Entity('exercise_volume')
 export class ExerciseVolumeModel implements IExercise_volume {
-  @PrimaryColumn({ comment: '운동 볼륨 ID' })
+  @PrimaryGeneratedColumn({ comment: '운동 볼륨 ID' })
   volume_id: number;
+
+  @Column({ comment: '헬스 기구 ID' })
+  fitness_machine_id: number;
 
   @ManyToOne(
     () => FitnessMachineModel,
@@ -32,6 +36,9 @@ export class ExerciseVolumeModel implements IExercise_volume {
 
   @Column('decimal', { precision: 10, scale: 1, comment: '횟수 x 세트 x 중량' })
   total_weight: number;
+
+  @Column({ type: 'varchar', length: '50', comment: '운동 볼륨 게시글 고유값' })
+  post_id: string;
 
   @CreateDateColumn({ type: 'timestamp' })
   created_at: Date;

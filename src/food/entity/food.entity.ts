@@ -16,7 +16,7 @@ export class foodModel implements IFood {
   @Column({ type: 'varchar', length: '50', comment: '음식 설명' })
   food_notice: string;
 
-  @OneToOne(() => nutrientModel, (nutrient) => nutrient.food_id)
+  @OneToOne(() => nutrientModel, (nutrient) => nutrient.food)
   @JoinColumn({ name: 'nutrient_id' })
   nutrient: nutrientModel;
 }
