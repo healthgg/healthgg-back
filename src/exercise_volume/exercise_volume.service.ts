@@ -4,6 +4,7 @@ import { ExerciseVolumeModel } from './entity/exercise_volume.entity';
 import { Repository } from 'typeorm';
 import * as ExcelJS from 'exceljs';
 import { generateRandomString } from 'src/utill/random';
+import { BodyPartEnum } from 'src/body_part/enum/body_part.enum';
 
 @Injectable()
 export class ExerciseVolumeService {
@@ -17,7 +18,7 @@ export class ExerciseVolumeService {
   }
 
   async getExerciseVolmesId(post_id) {
-    return await this.exerciseVolumeRepository.findBy({ post_id });
+    return { data: await this.exerciseVolumeRepository.findBy({ post_id }) };
   }
 
   async postExerciseVolmes(body) {

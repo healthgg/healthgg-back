@@ -1,4 +1,4 @@
-import { Controller } from '@nestjs/common';
+import { Controller, Get } from '@nestjs/common';
 import { WebSocketServer } from '@nestjs/websockets';
 import { Server } from 'http';
 import { ExerciseVolumeService } from 'src/exercise_volume/exercise_volume.service';
@@ -14,6 +14,7 @@ export class MainController {
     private readonly exerciseVolumeService: ExerciseVolumeService,
   ) {}
 
+  @Get()
   async getMaindata() {
     console.log(this.server);
     const members = this.eventsGateway.getConnettions();

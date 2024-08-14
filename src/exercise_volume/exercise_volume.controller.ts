@@ -1,19 +1,14 @@
 import { Body, Controller, Get, Param, Post, Res } from '@nestjs/common';
 import { ExerciseVolumeService } from './exercise_volume.service';
-import {
-  PostExerciseVolmeDto,
-  PostExerciseVolumeArrayDto,
-} from './dto/crate_exercise_volme.dto';
+import { PostExerciseVolumeArrayDto } from './dto/crate_exercise_volme.dto';
 
-@Controller('exercise-volume')
+@Controller('exercise_volume')
 export class ExerciseVolumeController {
   constructor(private readonly exerciseVolumeService: ExerciseVolumeService) {}
 
   @Get(':post_id')
   async getExerciseVolmes(@Param('post_id') post_id: string) {
-    return {
-      data: await this.exerciseVolumeService.getExerciseVolmesId(post_id),
-    };
+    return await this.exerciseVolumeService.getExerciseVolmesId(post_id);
   }
 
   @Post('share')
@@ -21,7 +16,7 @@ export class ExerciseVolumeController {
     return await this.exerciseVolumeService.postExerciseVolmes(body.data);
   }
 
-  @Post('execel')
+  @Post('excel')
   async postExerciseVolmeExcel(@Res() res: Response) {
     // 데이터 예시
     const data = [
@@ -45,8 +40,8 @@ export class ExerciseVolumeController {
     // Excel 파일 생성
     const buffer = await this.exerciseVolumeService.generateExcel(data);
 
-    // 파일 전송
-    // res.setHeader(
+    //파일 전송
+    // res.headers(
     //   'Content-Disposition',
     //   'attachment; filename=fitness-machines.xlsx',
     // );
