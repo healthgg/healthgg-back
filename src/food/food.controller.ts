@@ -14,25 +14,35 @@ import { CursorPageOptionsDto } from './cursor-page/cursor-page-option.dto';
 export class FoodController {
   constructor(private readonly foodService: FoodService) {}
 
-  @Get()
-  async getFoodList(@Query() cursorPageOptionDto: CursorPageOptionsDto) {
-    //return await this.foodService.getFoodList();
-
-    const result = await this.foodService.getFoodList(cursorPageOptionDto);
-
-    console.log(result);
+  @Get(':type')
+  async getFoodList(
+    @Param('type', ParseIntPipe) type: number,
+    @Query() cursorPageOptionsDto: CursorPageOptionsDto,
+  ) {
+    const result = await this.foodService.getFoodList(
+      cursorPageOptionsDto,
+      type,
+    );
     return result;
   }
 
-  @Get(':type')
-  async getFoodListType(@Param('type', ParseIntPipe) type: number) {
-    return await this.foodService.getFoodListType(type);
+  @Post('share')
+  async postFoodList() {
+    return 1;
   }
 
-  // @Post()
-  // async postFoodList(@Body() body){
+  @Post('excel')
+  async postFoodListExecl(@Body() body) {
+    //return await this.foodService.
+  }
 
-  //   return await this.foodService.
+  @Get()
+  async getSearchFoodList(@Body() body) {
+    //return await this.foodService.
+  }
 
-  // }
+  @Get(':post_id')
+  async getFoodListDetail(@Body() body) {
+    //return await this.foodService.
+  }
 }

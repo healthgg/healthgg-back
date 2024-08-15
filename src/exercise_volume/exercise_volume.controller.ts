@@ -7,7 +7,7 @@ export class ExerciseVolumeController {
   constructor(private readonly exerciseVolumeService: ExerciseVolumeService) {}
 
   @Get(':post_id')
-  async getExerciseVolmes(@Param('post_id') post_id: string) {
+  async getExerciseVolmesDetail(@Param('post_id') post_id: string) {
     return await this.exerciseVolumeService.getExerciseVolmesId(post_id);
   }
 

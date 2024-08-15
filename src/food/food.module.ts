@@ -11,3 +11,6 @@ import { nutrientModel } from 'src/nutrient/entity/nutrient.entity';
   providers: [FoodService],
 })
 export class FoodModule {}
+
+
+

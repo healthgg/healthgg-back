@@ -7,13 +7,14 @@ import { BodyPartModule } from './body_part/body_part.module';
 import { FoodModule } from './food/food.module';
 import { NutrientModule } from './nutrient/nutrient.module';
 import { ExerciseVolumeModule } from './exercise_volume/exercise_volume.module';
-import { ExerciseVolumeController } from './exercise_volume/exercise_volume.controller';
 import { MainModule } from './main/main.module';
+import { CacheModule } from '@nestjs/cache-manager';
 //import { RedisModule } from '@liaoliaots/nestjs-redis';
 
 @Module({
   imports: [
-    // CacheModule.registerAsync({ isGlobal: true, useClass: CacheConfigService }),
+    CacheModule.register({ isGlobal: true }),
+    ConfigModule.forRoot(), // 환경 변수 모듈 설정
     TypeOrmModule.forRoot({
       type: 'mysql',
       host: process.env.DATABASE_HOST,

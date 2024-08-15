@@ -7,92 +7,27 @@ import { NutrientEnum } from 'src/nutrient/enum/nutrient.enum';
 import { CursorPageOptionsDto } from './cursor-page/cursor-page-option.dto';
 import { CursorPageMetaDto } from './cursor-page/cursor-page.meta.dto';
 import { CursorPageDto } from './cursor-page/cursor-page.dto';
+import { Cache } from 'cache-manager';
+import { CACHE_MANAGER } from '@nestjs/cache-manager';
 
 @Injectable()
 export class FoodService {
   constructor(
+    @Inject(CACHE_MANAGER)
+    private cacheManager: Cache,
     @InjectRepository(foodModel)
     private readonly foodRepository: Repository<foodModel>,
     @InjectRepository(nutrientModel)
     private readonly nutrientRepository: Repository<nutrientModel>,
   ) {}
 
-  async getFoodList(cursorPageOptionDto: CursorPageOptionsDto) {
-    const [foods, total] = await this.foodRepository.findAndCount({
-      take: cursorPageOptionDto.take,
-      where: {
-        food_id: LessThan(cursorPageOptionDto.cursorId),
-      },
-      order: {
-        food_id: 'DESC' as any,
-      },
-    });
+  async getFoodList(cursorPageOptionsDto: CursorPageOptionsDto, type: number) {
+    let take = cursorPageOptionsDto?.take || 4;
 
-    console.log(cursorPageOptionDto.sort);
-    //console.log('mates: ', b);
-    //const a = await this.foodRepository.count()
-    // let cursorId = 0;
-    // const result = await this.foodRepository
-    //   .createQueryBuilder('food')
-    //   .leftJoinAndSelect('food.nutrient', 'nutrient')
-    //   .select([
-    //     'food.food_id',
-    //     'food.food_imageurl',
-    //     'food.food_name',
-    //     'food.food_notice',
-    //     'nutrient.nutrient_id',
-    //     'nutrient.calory',
-    //     'nutrient.protein',
-    //     'nutrient.carbohydrate',
-    //     'nutrient.fat',
-    //     'nutrient.amount',
-    //     'nutrient.unit',
-    //     'nutrient.mainNutrient',
-    //   ])
-    //   .getMany();
-    // return { data: result };
-    let hasNextData = true;
-    let cursor: number;
-    let firstDataWithNextCursor;
-
-    const takePerScroll = cursorPageOptionDto.take;
-    const isLastScroll = total <= takePerScroll;
-    const lastDataPerScroll = foods[foods.length - 1];
-
-    //---------------------------------------------------------
-
-    const allFoods = await this.getAllFoods();
-
-    if (isLastScroll) {
-      hasNextData = false;
-      cursor = null;
-    } else {
-      cursor = lastDataPerScroll.food_id;
-      const lastDataPerPageIndexOf = allFoods.findIndex(
-        (data) => data.food_id === cursor,
-      );
-      firstDataWithNextCursor = allFoods[lastDataPerPageIndexOf - 1];
-
-      foods.push(firstDataWithNextCursor);
-    }
-
-    //------------------------------------------------------------
-
-    const cursorPageMetaDto = new CursorPageMetaDto({
-      cursorPageOptionDto,
-      total,
-      hasNextData,
-      cursor,
-    });
-
-    return new CursorPageDto(foods, cursorPageMetaDto);
-  }
-
-  async getFoodListType(type: number) {
     if (!Object.values(NutrientEnum).includes(type)) {
       throw new BadRequestException('존재 하지 않는 영양소');
     }
-    const result = await this.foodRepository
+    const [foods, total] = await this.foodRepository
       .createQueryBuilder('food')
       .leftJoinAndSelect('food.nutrient', 'nutrient')
       .select([
@@ -109,13 +44,55 @@ export class FoodService {
         'nutrient.unit',
         'nutrient.mainNutrient',
       ])
-      .where('nutrient.mainNutrient = :mainNutrient', { mainNutrient: type })
-      .getMany();
+      .where(
+        'nutrient.mainNutrient = :mainNutrient AND food.food_id < :cursorId',
+        { mainNutrient: type, cursorId: cursorPageOptionsDto.cursorId },
+      )
+      .orderBy('food.food_id', 'DESC')
+      .take(take)
+      .getManyAndCount();
 
-    return { data: result };
+    let hasNextData = true;
+    let cursor: number;
+    let firstDataWithNextCursor;
+
+    const takePerScroll = cursorPageOptionsDto.take;
+    const isLastScroll = total <= takePerScroll;
+    const lastDataPerScroll = foods[foods.length - 1];
+
+    const allFoods = await this.getAllFoods();
+
+    if (isLastScroll) {
+      hasNextData = false;
+      cursor = null;
+    } else {
+      cursor = lastDataPerScroll.food_id;
+      const lastDataPerPageIndexOf = allFoods.findIndex(
+        (data) => data.food_id === cursor,
+      );
+      firstDataWithNextCursor = allFoods[lastDataPerPageIndexOf - 1];
+
+      foods.push(firstDataWithNextCursor);
+    }
+
+    const cursorPageMetaDto = new CursorPageMetaDto({
+      cursorPageOptionsDto,
+      total,
+      hasNextData,
+      cursor,
+    });
+
+    return new CursorPageDto(foods, cursorPageMetaDto);
   }
 
   async getAllFoods() {
-    return await this.foodRepository.find();
+    const cacheFoods = await this.cacheManager.get('foods');
+    if (!cacheFoods) {
+      console.log('Cache Miss');
+      const foods = await this.foodRepository.find();
+      await this.cacheManager.set('foods', JSON.stringify(foods), 604800);
+      return foods;
+    }
+    return JSON.parse(await this.cacheManager.get('foods'));
   }
 }
