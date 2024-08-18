@@ -9,6 +9,8 @@ import {
 } from '@nestjs/common';
 import { FoodService } from './food.service';
 import { CursorPageOptionsDto } from './cursor-page/cursor-page-option.dto';
+import { PostFoodArrayDto, PostFoodDto } from './dto/create_food.dto';
+import { SearchService } from 'src/search/search.service';
 
 @Controller('food')
 export class FoodController {
@@ -27,22 +29,22 @@ export class FoodController {
   }
 
   @Post('share')
-  async postFoodList() {
-    return 1;
+  async postFoodList(@Body() body: PostFoodArrayDto) {
+    return await this.foodService.postFoodListArray(body.data);
   }
 
   @Post('excel')
   async postFoodListExecl(@Body() body) {
-    //return await this.foodService.
+    return await this.foodService.postFoodListExcel(body.data);
   }
 
   @Get()
-  async getSearchFoodList(@Body() body) {
-    //return await this.foodService.
+  async getSearchFoodList(@Query() search) {
+    return await this.foodService.searchFood(search);
   }
 
-  @Get(':post_id')
-  async getFoodListDetail(@Body() body) {
-    //return await this.foodService.
+  @Get('board/:post_id')
+  async getFoodListDetail(@Param('post_id') post_id: string) {
+    return await this.foodService.getFoodDetail(post_id);
   }
 }

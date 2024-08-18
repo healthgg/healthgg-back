@@ -6,14 +6,21 @@ import { ExerciseVolumeService } from 'src/exercise_volume/exercise_volume.servi
 import { ExerciseVolumeModel } from 'src/exercise_volume/entity/exercise_volume.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { EventsGateway } from 'src/gateway/events.gateway';
+import { FoodService } from 'src/food/food.service';
+import { foodModel } from 'src/food/entity/food.entity';
+import { nutrientModel } from 'src/nutrient/entity/nutrient.entity';
+import { SearchModule } from 'src/search/search.module';
+import { FoodModule } from 'src/food/food.module';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([ExerciseVolumeModel]),
+    TypeOrmModule.forFeature([ExerciseVolumeModel, foodModel, nutrientModel]),
     ExerciseVolumeModule,
     EventsGateway,
+    SearchModule,
+    FoodModule,
   ],
   controllers: [MainController],
-  providers: [MainService, ExerciseVolumeService, EventsGateway],
+  providers: [MainService, EventsGateway, FoodService],
 })
 export class MainModule {}

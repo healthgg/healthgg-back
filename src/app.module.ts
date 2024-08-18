@@ -10,6 +10,7 @@ import { ExerciseVolumeModule } from './exercise_volume/exercise_volume.module';
 import { MainModule } from './main/main.module';
 import { CacheModule } from '@nestjs/cache-manager';
 //import { RedisModule } from '@liaoliaots/nestjs-redis';
+import { SearchModule } from './search/search.module';
 
 @Module({
   imports: [
@@ -33,6 +34,7 @@ import { CacheModule } from '@nestjs/cache-manager';
     NutrientModule,
     ExerciseVolumeModule,
     MainModule,
+    SearchModule,
     // RedisModule.forRoot({
     //   readyLog: true,
     //   config: {

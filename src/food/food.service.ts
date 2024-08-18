@@ -9,6 +9,9 @@ import { CursorPageMetaDto } from './cursor-page/cursor-page.meta.dto';
 import { CursorPageDto } from './cursor-page/cursor-page.dto';
 import { Cache } from 'cache-manager';
 import { CACHE_MANAGER } from '@nestjs/cache-manager';
+import { generateRandomString } from 'src/utill/random';
+import { generateExcel } from 'src/utill/generateExecel';
+import { SearchService } from 'src/search/search.service';
 
 @Injectable()
 export class FoodService {
@@ -19,6 +22,7 @@ export class FoodService {
     private readonly foodRepository: Repository<foodModel>,
     @InjectRepository(nutrientModel)
     private readonly nutrientRepository: Repository<nutrientModel>,
+    private readonly searchService: SearchService,
   ) {}
 
   async getFoodList(cursorPageOptionsDto: CursorPageOptionsDto, type: number) {
@@ -85,14 +89,52 @@ export class FoodService {
     return new CursorPageDto(foods, cursorPageMetaDto);
   }
 
-  async getAllFoods() {
+  async getAllFoods(take?: number | null) {
     const cacheFoods = await this.cacheManager.get('foods');
     if (!cacheFoods) {
       console.log('Cache Miss');
-      const foods = await this.foodRepository.find();
-      await this.cacheManager.set('foods', JSON.stringify(foods), 604800);
-      return foods;
+      await this.cacheManager.set(
+        'foods',
+        JSON.stringify(await this.foodRepository.find()),
+        604800,
+      );
+      return take
+        ? await this.foodRepository.find({
+            take,
+          })
+        : await this.foodRepository.find();
     }
-    return JSON.parse(await this.cacheManager.get('foods'));
+
+    return take
+      ? await this.foodRepository.find({ take })
+      : JSON.parse(await this.cacheManager.get('foods'));
+  }
+
+  async getFoodDetail(post_id: string) {
+    return await this.foodRepository.find({
+      where: {
+        post_id,
+      },
+    });
+  }
+
+  async postFoodListArray(body) {
+    const post_id: string = generateRandomString(16);
+    const data = body.map((e) => ({
+      ...e,
+      post_id,
+    }));
+
+    const foodEntity = this.foodRepository.create(data);
+
+    await this.foodRepository.save(foodEntity);
+  }
+
+  async postFoodListExcel(body) {
+    return await generateExcel(body);
+  }
+
+  async searchFood(search) {
+    return await this.searchService.search(search);
   }
 }

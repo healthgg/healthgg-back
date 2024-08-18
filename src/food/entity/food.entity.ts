@@ -1,10 +1,17 @@
-import { Column, Entity, JoinColumn, OneToOne, PrimaryColumn } from 'typeorm';
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  JoinColumn,
+  OneToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 import { IFood } from '../interface/food.interface';
 import { nutrientModel } from 'src/nutrient/entity/nutrient.entity';
 
 @Entity('food')
 export class foodModel implements IFood {
-  @PrimaryColumn({ comment: '음식 ID' })
+  @PrimaryGeneratedColumn({ comment: '음식 ID' })
   food_id: number;
 
   @Column({ type: 'varchar', length: '255', comment: '음식 이미지 url' })
@@ -22,4 +29,7 @@ export class foodModel implements IFood {
   @OneToOne(() => nutrientModel, (nutrient) => nutrient.food)
   @JoinColumn({ name: 'nutrient_id' })
   nutrient: nutrientModel;
+
+  @CreateDateColumn({ type: 'timestamp' })
+  created_at: Date;
 }
