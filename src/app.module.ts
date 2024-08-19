@@ -11,9 +11,10 @@ import { MainModule } from './main/main.module';
 import { CacheModule } from '@nestjs/cache-manager';
 //import { RedisModule } from '@liaoliaots/nestjs-redis';
 import { SearchModule } from './search/search.module';
-
+import { ScheduleModule } from '@nestjs/schedule';
 @Module({
   imports: [
+    ScheduleModule.forRoot(),
     CacheModule.register({ isGlobal: true }),
     ConfigModule.forRoot({ isGlobal: true }), // 환경 변수 모듈 설정
     TypeOrmModule.forRoot({
@@ -25,7 +26,7 @@ import { SearchModule } from './search/search.module';
       database: process.env.DATABASE_NAME,
       entities: [__dirname + '/**/*.entity.*'],
       autoLoadEntities: true,
-      synchronize: false,
+      synchronize: true,
       logging: true,
     }),
     FitnessMachineModule,

@@ -11,10 +11,16 @@ import { foodModel } from 'src/food/entity/food.entity';
 import { nutrientModel } from 'src/nutrient/entity/nutrient.entity';
 import { SearchModule } from 'src/search/search.module';
 import { FoodModule } from 'src/food/food.module';
+import { visitor } from './entity/visitor.entity';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([ExerciseVolumeModel, foodModel, nutrientModel]),
+    TypeOrmModule.forFeature([
+      ExerciseVolumeModel,
+      foodModel,
+      nutrientModel,
+      visitor,
+    ]),
     ExerciseVolumeModule,
     EventsGateway,
     SearchModule,

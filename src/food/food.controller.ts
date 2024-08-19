@@ -25,7 +25,7 @@ export class FoodController {
       cursorPageOptionsDto,
       type,
     );
-    return result;
+    return { foodList: result.data, meta: result.meta };
   }
 
   @Post('share')
