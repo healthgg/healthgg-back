@@ -10,7 +10,7 @@ import { FitnessMachineService } from './fitness_machine.service';
 import { IFitnessMachine } from './interface/fitness_machine.interface';
 import { CursorPageOptionsDto } from 'src/food/cursor-page/cursor-page-option.dto';
 
-@Controller('fitness-machine')
+@Controller('fitness_machine')
 export class FitnessMachineController {
   constructor(private readonly fitnessService: FitnessMachineService) {}
 
@@ -27,6 +27,6 @@ export class FitnessMachineController {
 
   @Get()
   async getgetFitnessMachineSearch(@Query() search) {
-    console.log(search);
+    return await this.fitnessService.searchFitnessMachine(search);
   }
 }

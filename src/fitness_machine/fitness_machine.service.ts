@@ -14,6 +14,7 @@ import { CursorPageDto } from 'src/food/cursor-page/cursor-page.dto';
 import { CursorPageOptionsDto } from 'src/food/cursor-page/cursor-page-option.dto';
 import { CACHE_MANAGER } from '@nestjs/cache-manager';
 import { Cache } from 'cache-manager';
+import { SearchService } from 'src/search/search.service';
 
 @Injectable()
 export class FitnessMachineService {
@@ -22,6 +23,7 @@ export class FitnessMachineService {
     private cacheManager: Cache,
     @InjectRepository(FitnessMachineModel)
     private readonly fitnessMachineRepository: Repository<FitnessMachineModel>,
+    private readonly searchService: SearchService,
   ) {}
 
   async getFitnessMachineList(
@@ -99,5 +101,9 @@ export class FitnessMachineService {
       return machines;
     }
     return JSON.parse(await this.cacheManager.get('machines'));
+  }
+
+  async searchFitnessMachine(search) {
+    return await this.searchService.searchFitness(search);
   }
 }

@@ -15,7 +15,7 @@ import { SearchModule } from './search/search.module';
 @Module({
   imports: [
     CacheModule.register({ isGlobal: true }),
-    ConfigModule.forRoot(), // 환경 변수 모듈 설정
+    ConfigModule.forRoot({ isGlobal: true }), // 환경 변수 모듈 설정
     TypeOrmModule.forRoot({
       type: 'mysql',
       host: process.env.DATABASE_HOST,
@@ -25,7 +25,7 @@ import { SearchModule } from './search/search.module';
       database: process.env.DATABASE_NAME,
       entities: [__dirname + '/**/*.entity.*'],
       autoLoadEntities: true,
-      synchronize: true,
+      synchronize: false,
       logging: true,
     }),
     FitnessMachineModule,

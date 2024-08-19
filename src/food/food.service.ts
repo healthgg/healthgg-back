@@ -135,6 +135,6 @@ export class FoodService {
   }
 
   async searchFood(search) {
-    return await this.searchService.search(search);
+    return await this.searchService.searchFood(search);
   }
 }
