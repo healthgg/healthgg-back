@@ -22,7 +22,4 @@ export class MainService {
   async incrementVisitor(): Promise<void> {
     await this.visitorRepository.increment({ id: 1 }, 'totalvistor', 1);
   }
-
-  // @Cron('* * * * * *')
-  // async addVisitor() {}
 }

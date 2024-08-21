@@ -5,7 +5,7 @@ import { Repository } from 'typeorm';
 
 import { generateRandomString } from 'src/utill/random';
 import { BodyPartEnum } from 'src/body_part/enum/body_part.enum';
-import { generateExcel } from 'src/utill/generateExecel';
+import { generateVolumeExcel } from 'src/utill/generateExecel';
 
 @Injectable()
 export class ExerciseVolumeService {
@@ -36,6 +36,6 @@ export class ExerciseVolumeService {
   }
 
   async postExerciseExcel(body) {
-    return await generateExcel(body);
+    return await generateVolumeExcel(body);
   }
 }

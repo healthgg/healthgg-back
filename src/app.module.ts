@@ -26,7 +26,7 @@ import { ScheduleModule } from '@nestjs/schedule';
       database: process.env.DATABASE_NAME,
       entities: [__dirname + '/**/*.entity.*'],
       autoLoadEntities: true,
-      synchronize: true,
+      synchronize: false,
       logging: true,
     }),
     FitnessMachineModule,

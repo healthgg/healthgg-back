@@ -6,11 +6,13 @@ import {
   ParseIntPipe,
   Post,
   Query,
+  Res,
 } from '@nestjs/common';
 import { FoodService } from './food.service';
 import { CursorPageOptionsDto } from './cursor-page/cursor-page-option.dto';
 import { PostFoodArrayDto, PostFoodDto } from './dto/create_food.dto';
 import { SearchService } from 'src/search/search.service';
+import { Response } from 'express';
 
 @Controller('food')
 export class FoodController {
@@ -34,8 +36,18 @@ export class FoodController {
   }
 
   @Post('excel')
-  async postFoodListExecl(@Body() body) {
-    return await this.foodService.postFoodListExcel(body.data);
+  async postFoodListExecl(@Body() body, @Res() res: Response) {
+    const buffer = await this.foodService.postFoodListExcel(body.data);
+
+    res.header(
+      'Content-Disposition',
+      'attachment; filename=fitness-machines.xlsx',
+    );
+    res.setHeader(
+      'Content-Type',
+      'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+    );
+    res.send(buffer);
   }
 
   @Get()

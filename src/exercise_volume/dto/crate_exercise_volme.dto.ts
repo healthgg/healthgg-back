@@ -9,9 +9,11 @@ import {
 import { ExerciseVolumeModel } from '../entity/exercise_volume.entity';
 
 export class PostExerciseVolmeDto extends ExerciseVolumeModel {
-  @IsInt()
-  @IsNotEmpty()
+  //@IsInt()
+  //@IsNotEmpty()
   fitness_machine_id: number;
+
+  finess_machine_name: string;
 
   @IsInt()
   @IsNotEmpty()

@@ -2,7 +2,6 @@ import { Body, Controller, Get, Param, Post, Res } from '@nestjs/common';
 import { ExerciseVolumeService } from './exercise_volume.service';
 import { PostExerciseVolumeArrayDto } from './dto/crate_exercise_volme.dto';
 import { Response } from 'express';
-import { generateExcel } from 'src/utill/generateExecel';
 
 @Controller('exercise_volume')
 export class ExerciseVolumeController {
@@ -36,7 +35,7 @@ export class ExerciseVolumeController {
       'Content-Type',
       'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
     );
-    res.end(buffer);
+    res.send(buffer);
     //res.download(buffer); // 파일 다운로드
   }
 }

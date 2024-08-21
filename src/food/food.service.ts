@@ -10,7 +10,7 @@ import { CursorPageDto } from './cursor-page/cursor-page.dto';
 import { Cache } from 'cache-manager';
 import { CACHE_MANAGER } from '@nestjs/cache-manager';
 import { generateRandomString } from 'src/utill/random';
-import { generateExcel } from 'src/utill/generateExecel';
+import { generateFoodExcel } from 'src/utill/generateExecel';
 import { SearchService } from 'src/search/search.service';
 
 @Injectable()
@@ -131,7 +131,7 @@ export class FoodService {
   }
 
   async postFoodListExcel(body) {
-    return await generateExcel(body);
+    return await generateFoodExcel(body);
   }
 
   async searchFood(search) {
