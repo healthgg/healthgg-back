@@ -31,7 +31,7 @@ export class FoodController {
   }
 
   @Post('share')
-  async postFoodList(@Body() body: PostFoodArrayDto) {
+  async postFoodList(@Body() body) {
     return await this.foodService.postFoodListArray(body.data);
   }
 
@@ -39,10 +39,7 @@ export class FoodController {
   async postFoodListExecl(@Body() body, @Res() res: Response) {
     const buffer = await this.foodService.postFoodListExcel(body.data);
 
-    res.header(
-      'Content-Disposition',
-      'attachment; filename=fitness-machines.xlsx',
-    );
+    res.header('Content-Disposition', 'attachment; filename=food_list.xlsx');
     res.setHeader(
       'Content-Type',
       'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',

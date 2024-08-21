@@ -1,7 +1,7 @@
 import { BadRequestException, Inject, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { foodModel } from './entity/food.entity';
-import { LessThan, Repository } from 'typeorm';
+import { getRepository, LessThan, Repository } from 'typeorm';
 import { nutrientModel } from 'src/nutrient/entity/nutrient.entity';
 import { NutrientEnum } from 'src/nutrient/enum/nutrient.enum';
 import { CursorPageOptionsDto } from './cursor-page/cursor-page-option.dto';
@@ -12,6 +12,8 @@ import { CACHE_MANAGER } from '@nestjs/cache-manager';
 import { generateRandomString } from 'src/utill/random';
 import { generateFoodExcel } from 'src/utill/generateExecel';
 import { SearchService } from 'src/search/search.service';
+import { FoodBoardModel } from './entity/foodBoard.entity';
+import { MealEnum } from './enum/meal.enum';
 
 @Injectable()
 export class FoodService {
@@ -23,6 +25,8 @@ export class FoodService {
     @InjectRepository(nutrientModel)
     private readonly nutrientRepository: Repository<nutrientModel>,
     private readonly searchService: SearchService,
+    @InjectRepository(FoodBoardModel)
+    private readonly foodboardRepository: Repository<FoodBoardModel>,
   ) {}
 
   async getFoodList(cursorPageOptionsDto: CursorPageOptionsDto, type: number) {
@@ -111,23 +115,35 @@ export class FoodService {
   }
 
   async getFoodDetail(post_id: string) {
-    return await this.foodRepository.find({
-      where: {
-        post_id,
-      },
-    });
+    const foodDetail = await this.foodboardRepository
+      .createQueryBuilder('food_board')
+      .leftJoinAndSelect('food_board.food', 'food')
+      .leftJoinAndSelect('food_board.nutrient', 'nutrient')
+      .where('food_board.board_id = :board_id', { board_id: post_id })
+      .getMany();
+    return foodDetail;
   }
 
   async postFoodListArray(body) {
-    const post_id: string = generateRandomString(16);
-    const data = body.map((e) => ({
-      ...e,
-      post_id,
-    }));
-
-    const foodEntity = this.foodRepository.create(data);
-
-    await this.foodRepository.save(foodEntity);
+    const board_id: string = generateRandomString(16);
+    const meals: string[] = Object.keys(body);
+    for (let i = 0; i < meals.length; i++) {
+      for (let j = 0; j < body[meals[i]].length; j++) {
+        const mealData = {
+          meal:
+            meals[i] === 'Breakfast'
+              ? MealEnum.BREAKFAST
+              : meals[i] === 'Lunch'
+                ? MealEnum.LUNCH
+                : MealEnum.DINNER,
+          board_id,
+          food_id: body[`${meals[i]}`][j].food_id,
+          nutrient_id: body[`${meals[i]}`][j].nutrient_id,
+        };
+        const foodEntity = this.foodboardRepository.create(mealData);
+        await this.foodboardRepository.save(foodEntity);
+      }
+    }
   }
 
   async postFoodListExcel(body) {

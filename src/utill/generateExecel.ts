@@ -59,8 +59,6 @@ export async function generateVolumeExcel(data) {
       worksheet.getCell(`${col}3`).value = data[i].set; // B3, C3, D3, etc.
       worksheet.getCell(`${col}4`).value = data[i].weight; // B4, C4, D4, etc.
       worksheet.getCell(`${col}5`).value = `${data[i].total_weight} (kg)`; // B5, C5, D5, etc.
-
-      console.log(data[i].total_weight);
     }
   }
 
