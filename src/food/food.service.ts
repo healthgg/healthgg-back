@@ -1,7 +1,7 @@
 import { BadRequestException, Inject, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { foodModel } from './entity/food.entity';
-import { getRepository, LessThan, Repository } from 'typeorm';
+import { Connection, getRepository, LessThan, Repository } from 'typeorm';
 import { nutrientModel } from 'src/nutrient/entity/nutrient.entity';
 import { NutrientEnum } from 'src/nutrient/enum/nutrient.enum';
 import { CursorPageOptionsDto } from './cursor-page/cursor-page-option.dto';
@@ -27,6 +27,7 @@ export class FoodService {
     private readonly searchService: SearchService,
     @InjectRepository(FoodBoardModel)
     private readonly foodboardRepository: Repository<FoodBoardModel>,
+    private connection: Connection,
   ) {}
 
   async getFoodList(cursorPageOptionsDto: CursorPageOptionsDto, type: number) {
@@ -127,22 +128,33 @@ export class FoodService {
   async postFoodListArray(body) {
     const board_id: string = generateRandomString(16);
     const meals: string[] = Object.keys(body);
-    for (let i = 0; i < meals.length; i++) {
-      for (let j = 0; j < body[meals[i]].length; j++) {
-        const mealData = {
-          meal:
-            meals[i] === 'Breakfast'
-              ? MealEnum.BREAKFAST
-              : meals[i] === 'Lunch'
-                ? MealEnum.LUNCH
-                : MealEnum.DINNER,
-          board_id,
-          food_id: body[`${meals[i]}`][j].food_id,
-          nutrient_id: body[`${meals[i]}`][j].nutrient_id,
-        };
-        const foodEntity = this.foodboardRepository.create(mealData);
-        await this.foodboardRepository.save(foodEntity);
+    const queryRunner = this.connection.createQueryRunner();
+    await queryRunner.connect();
+    await queryRunner.startTransaction(); // 트랜잭션 시작
+    try {
+      for (let i = 0; i < meals.length; i++) {
+        for (let j = 0; j < body[meals[i]].length; j++) {
+          const mealData = {
+            meal:
+              meals[i] === 'Breakfast'
+                ? MealEnum.BREAKFAST
+                : meals[i] === 'Lunch'
+                  ? MealEnum.LUNCH
+                  : MealEnum.DINNER,
+            board_id,
+            food_id: body[`${meals[i]}`][j].food_id,
+            nutrient_id: body[`${meals[i]}`][j].nutrient_id,
+          };
+          const foodEntity = this.foodboardRepository.create(mealData);
+          await this.foodboardRepository.save(foodEntity);
+        }
       }
+      await queryRunner.commitTransaction(); // 트랜잭션 커밋
+    } catch (error) {
+      await queryRunner.rollbackTransaction(); // 트랜잭션 롤백
+      throw error;
+    } finally {
+      await queryRunner.release(); // 쿼리 실행기 해제
     }
   }
 

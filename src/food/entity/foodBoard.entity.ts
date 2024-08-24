@@ -15,21 +15,21 @@ export class FoodBoardModel {
   @PrimaryGeneratedColumn()
   food_Board_id: number;
 
-  @Column()
+  @Column({ type: 'varchar' })
   board_id: string;
 
-  @Column({ type: 'int' }) // Ensure correct type
+  @Column({ type: 'int' }) e;
   food_id: number;
 
-  @Column({ type: 'int' }) // Ensure correct type
+  @Column({ type: 'int' })
   nutrient_id: number;
 
   @ManyToOne(() => foodModel, (food) => food.foodBoards)
-  @JoinColumn({ name: 'food_id' }) // Foreign key reference
+  @JoinColumn({ name: 'food_id' })
   food: foodModel;
 
   @ManyToOne(() => nutrientModel, (nutrient) => nutrient.foodBoards)
-  @JoinColumn({ name: 'nutrient_id' }) // Foreign key reference
+  @JoinColumn({ name: 'nutrient_id' })
   nutrient: nutrientModel;
 
   @Column({
