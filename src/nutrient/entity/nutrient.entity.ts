@@ -1,14 +1,25 @@
 import { foodModel } from 'src/food/entity/food.entity';
-import { Column, Entity, JoinColumn, OneToOne, PrimaryColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  OneToMany,
+  OneToOne,
+  PrimaryColumn,
+} from 'typeorm';
 import { INutrient } from '../interface/nutrient.interface';
 import { NutrientEnum } from '../enum/nutrient.enum';
+import { FoodBoardModel } from 'src/food/entity/foodBoard.entity';
 
 @Entity('nutrient')
 export class nutrientModel implements INutrient {
   @PrimaryColumn({ comment: '영양소 ID' })
   nutrient_id: number;
 
-  @OneToOne(() => foodModel, (food) => food.nutrient)
+  @OneToMany(() => FoodBoardModel, (foodBoard) => foodBoard.nutrient)
+  foodBoards: FoodBoardModel[];
+
+  @OneToOne(() => foodModel, (food) => food.nutreint)
   @JoinColumn({ name: 'food_id' }) // 외래 키로 설정
   food: foodModel;
 

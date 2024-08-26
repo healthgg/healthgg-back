@@ -7,13 +7,16 @@ import { BodyPartModule } from './body_part/body_part.module';
 import { FoodModule } from './food/food.module';
 import { NutrientModule } from './nutrient/nutrient.module';
 import { ExerciseVolumeModule } from './exercise_volume/exercise_volume.module';
-import { ExerciseVolumeController } from './exercise_volume/exercise_volume.controller';
 import { MainModule } from './main/main.module';
+import { CacheModule } from '@nestjs/cache-manager';
 //import { RedisModule } from '@liaoliaots/nestjs-redis';
-
+import { SearchModule } from './search/search.module';
+import { ScheduleModule } from '@nestjs/schedule';
 @Module({
   imports: [
-    // CacheModule.registerAsync({ isGlobal: true, useClass: CacheConfigService }),
+    ScheduleModule.forRoot(),
+    CacheModule.register({ isGlobal: true }),
+    ConfigModule.forRoot({ isGlobal: true }), // 환경 변수 모듈 설정
     TypeOrmModule.forRoot({
       type: 'mysql',
       host: process.env.DATABASE_HOST,
@@ -23,7 +26,7 @@ import { MainModule } from './main/main.module';
       database: process.env.DATABASE_NAME,
       entities: [__dirname + '/**/*.entity.*'],
       autoLoadEntities: true,
-      synchronize: true,
+      synchronize: false,
       logging: true,
     }),
     FitnessMachineModule,
@@ -32,6 +35,7 @@ import { MainModule } from './main/main.module';
     NutrientModule,
     ExerciseVolumeModule,
     MainModule,
+    SearchModule,
     // RedisModule.forRoot({
     //   readyLog: true,
     //   config: {

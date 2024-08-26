@@ -9,39 +9,27 @@ import {
 import { ExerciseVolumeModel } from '../entity/exercise_volume.entity';
 
 export class PostExerciseVolmeDto extends ExerciseVolumeModel {
-  @IsOptional()
-  volume_id: number;
-
-  @IsInt()
-  //@Min(5)
-  @IsNotEmpty()
+  //@IsInt()
+  //@IsNotEmpty()
   fitness_machine_id: number;
 
-  // @IsInt()
-  // @Min(1)
-  // @IsNotEmpty()
+  finess_machine_name: string;
+
+  @IsInt()
+  @IsNotEmpty()
   repetition: number;
 
-  // @IsInt()
-  // @Min(1)
-  // @IsNotEmpty()
+  @IsInt()
+  @IsNotEmpty()
   set: number;
 
-  // @IsInt()
-  // @Min(1)
-  // @IsNotEmpty()
+  @IsInt()
+  @IsNotEmpty()
   weight: number;
 
-  // @IsInt()
-  // @Min(0)
-  // @IsNotEmpty()
+  @IsInt()
+  @IsNotEmpty()
   total_weight: number;
-
-  @IsOptional()
-  post_id: string;
-
-  @IsOptional()
-  created_at: Date;
 }
 
 export class PostExerciseVolumeArrayDto {

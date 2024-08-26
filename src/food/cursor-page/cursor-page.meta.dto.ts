@@ -9,12 +9,12 @@ export class CursorPageMetaDto {
   readonly cursor: number;
 
   constructor({
-    cursorPageOptionDto,
+    cursorPageOptionsDto,
     total,
     hasNextData,
     cursor,
   }: CursorPageMetaDtoParameters) {
-    this.take = cursorPageOptionDto.take;
+    this.take = cursorPageOptionsDto.take;
     this.total = total;
     this.hasNextData = hasNextData;
     this.cursor = cursor;
