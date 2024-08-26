@@ -12,8 +12,8 @@ jobs:
     runs-on: self-hosted
     steps:
       - name: Pull Docker image
-        run: docker pull ystar500833177/healthgg:latest
+        run: sudo docker pull ystar500833177/healthgg:latest
       - name: Delete Old docker container
-        run: docker rm -f healthgg || true
+        run: sudo docker rm -f healthgg || true
       - name: Run Docker Container
-        run: docker run -d -p 3000:3000 -e NODE_ENV=development --network healthgg-network --name healthgg-container ystar500833177/healthgg:latest
+        run: sudo docker run -d -p 3000:3000 -e NODE_ENV=development --network healthgg-network --name healthgg-container ystar500833177/healthgg:latest
