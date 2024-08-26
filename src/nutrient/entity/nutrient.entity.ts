@@ -19,7 +19,7 @@ export class nutrientModel implements INutrient {
   @OneToMany(() => FoodBoardModel, (foodBoard) => foodBoard.nutrient)
   foodBoards: FoodBoardModel[];
 
-  @OneToOne(() => foodModel, (food) => food.nutreint)
+  @OneToOne(() => foodModel, (food) => food.nutrient)
   @JoinColumn({ name: 'food_id' }) // 외래 키로 설정
   food: foodModel;
 

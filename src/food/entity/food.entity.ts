@@ -20,7 +20,7 @@ export class foodModel implements IFood {
   foodBoards: FoodBoardModel[];
 
   @OneToOne(() => nutrientModel, (nutrient) => nutrient.food)
-  nutreint: nutrientModel;
+  nutrient: nutrientModel;
 
   @Column({ type: 'varchar', length: '255', comment: '음식 이미지 url' })
   food_imageurl: string;

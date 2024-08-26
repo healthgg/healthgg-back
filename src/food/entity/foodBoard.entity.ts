@@ -18,7 +18,7 @@ export class FoodBoardModel {
   @Column({ type: 'varchar' })
   board_id: string;
 
-  @Column({ type: 'int' }) e;
+  @Column({ type: 'int' })
   food_id: number;
 
   @Column({ type: 'int' })
