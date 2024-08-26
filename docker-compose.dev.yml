@@ -3,29 +3,30 @@ version: '3.8'
 services:
   db:
     image: mysql:latest
-    container_name: mysql-container
+    platform: linux/amd64
+    container_name: heatlgg-mysql-container
     environment:
-      MYSQL_ROOT_PASSWORD: my-secret-pw
-      MYSQL_DATABASE: mydatabase
-      MYSQL_USER: myuser
-      MYSQL_PASSWORD: myuserpassword
+      MYSQL_ROOT_PASSWORD: 1234
+      MYSQL_DATABASE: heatlggDB
+      MYSQL_USER: user
+      MYSQL_PASSWORD: 1234
     ports:
-      - '3307:3306'
+      - '3306:3306'
     volumes:
-      - db-data:/var/lib/mysql
+      - /var/lib/mysql:/var/lib/mysql
 
   app:
     build:
       context: .
-      dockerfile: dockerfile.dev
-    container_name: healthggApp
+      dockerfile: dockerfile.development
+    container_name: healthgg-container
     environment:
       DATABASE_HOST: db
       DATABASE_PORT: 3306
-      DATABASE_USER: root
-      DATABASE_PASSWORD: my-secret-pw
-      DATABASE_NAME: mydatabase
-      NODE_ENV: dev
+      DATABASE_USER: user
+      DATABASE_PASSWORD: 1234
+      DATABASE_NAME: heatlggDB
+      NODE_ENV: development
     ports:
       - '3000:3000'
     depends_on:
