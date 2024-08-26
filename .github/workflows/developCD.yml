@@ -16,4 +16,6 @@ jobs:
       - name: Delete Old docker container
         run: sudo docker rm -f healthgg || true
       - name: Run Docker Container
-        run: sudo docker run -d -p 3000:3000 -e NODE_ENV=development --network healthgg-network --name healthgg-container ystar500833177/healthgg:latest
+        run: sudo docker stop healthgg-container || true
+          sudo docker rm healthgg-container || true
+          sudo docker run -d -p 3000:3000 -e NODE_ENV=development --network healthgg-network --name healthgg-container ystar500833177/healthgg:latest
