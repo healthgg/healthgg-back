@@ -1,7 +1,7 @@
 name: Docker Image CI
 
 on:
-  push:
+  pull_request:
     branches: ['develop']
 
 jobs:
@@ -17,7 +17,7 @@ jobs:
         run: docker login -u ${{secrets.DOCKERHUB_USERNAME}} -p ${{secrets.DOCKERHUB_PASSWORD}}
 
       - name: Build the Docker image
-        run: docker build -t healthgg .
+        run: docker build -t -f dockerfile.devlopment .
       - name: taging
         run: docker tag healthgg:latest healthgg:latest
       - name: Push to Dockerhub
