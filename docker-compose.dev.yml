@@ -3,6 +3,7 @@ version: '3.8'
 services:
   db:
     image: mysql:latest
+    platform: linux/amd64
     container_name: heatlgg-mysql-container
     environment:
       MYSQL_ROOT_PASSWORD: 1234
@@ -12,7 +13,7 @@ services:
     ports:
       - '3306:3306'
     volumes:
-      - db-data:/var/lib/mysql
+      - /var/lib/mysql:/var/lib/mysql
 
   app:
     build:
