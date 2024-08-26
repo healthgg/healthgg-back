@@ -21,22 +21,28 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect {
   server: Server;
 
   private rooms = new Map<string, string[]>(); // 방과 채팅 내역 저장
-  private clientsCount: number = 0;
+  private clientsCount: string[] = [];
 
   handleConnection(client: any, ...args: any[]): number {
-    this.clientsCount++;
+    this.clientsCount.push(client.id);
     this.server.emit('clientsCount', this.clientsCount);
 
     console.log(`Client connected: ${client.id}`);
-    return this.clientsCount;
+    console.log(this.clientsCount);
+    console.log(this.clientsCount.length);
+    return this.clientsCount.length;
   }
 
-  handleDisconnect(client: any): number {
-    this.clientsCount--;
+  handleDisconnect(client: any): number | [] {
+    const index = this.clientsCount.findIndex((item) => item === client.id);
+    console.log(index);
+    if (index) delete this.clientsCount === client.id;
     this.server.emit('clientsCount', this.clientsCount);
     //console.log(client);
     console.log(`Client disconnected: ${client.id}`);
-    return this.clientsCount;
+    console.log(this.clientsCount.length);
+    console.log(this.clientsCount?.length);
+    return this.clientsCount?.length ? this.clientsCount.length : [];
   }
 
   @SubscribeMessage('login_client')

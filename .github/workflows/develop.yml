@@ -1,7 +1,7 @@
-name: development PR
+name: Docker Image CI
 
 on:
-  pull_request:
+  push:
     branches: ['develop']
 
 jobs:
@@ -9,24 +9,16 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+      - uses: actions/checkout@v3
+      - name: Login Dockerhub
+        env:
+          DOCKER_USERNAME: ${{secrets.DOCKERHUB_USERNAME}}
+          DOCKER_PASSWORD: ${{secrets.DOCKERHUB_PASSWORD}}
+        run: docker login -u ${{secrets.DOCKERHUB_USERNAME}} -p ${{secrets.DOCKERHUB_PASSWORD}}
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v2
-        with:
-          node-version: '18' # Update this with your desired Node.js version
-
-      # - name: Set ENV
-      #   run: |
-      #     echo "${{ secrets.DOT_ENV_DEV }}" > .env.development
-      #   shell: bash
-
-      - name: SSH into VM
-        uses: appleboy/ssh-action@v1.0.3
-        with:
-          host: ${{ secrets.VM_HOST_DEV }}
-          username: ${{ secrets.VM_HOST_USERNAME_DEV }}
-          key: ${{ secrets.VM_HOST_PRIVATE_KEY_DEV }}
-          script: |
-            docker run
+      - name: Build the Docker image
+        run: docker build -t healthgg .
+      - name: taging
+        run: docker tag healthgg:latest healthgg:latest
+      - name: Push to Dockerhub
+        run: docker push healthgg:latest
