@@ -32,7 +32,7 @@ import { ScheduleModule } from '@nestjs/schedule';
       database: process.env.DATABASE_NAME,
       entities: [__dirname + '/**/*.entity.*'],
       autoLoadEntities: true,
-      synchronize: false,
+      synchronize: process.env.NODE_ENV === 'production' ? false : true,
       logging: true,
     }),
     FitnessMachineModule,
