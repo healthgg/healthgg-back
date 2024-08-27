@@ -32,7 +32,7 @@ export class FoodController {
 
   @Post('share')
   async postFoodList(@Body() body) {
-    return await this.foodService.postFoodListArray(body.data);
+    await this.foodService.postFoodListArray(body.data);
   }
 
   @Post('excel')
