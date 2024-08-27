@@ -1,0 +1,23 @@
+name: Docker Develop Image CI
+
+on:
+  pull_request:
+    branches: ['develop']
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Login Dockerhub
+        env:
+          DOCKER_USERNAME: ${{secrets.DOCKERHUB_USERNAME}}
+          DOCKER_PASSWORD: ${{secrets.DOCKERHUB_PASSWORD}}
+        run: docker login -u ${{secrets.DOCKERHUB_USERNAME}} -p ${{secrets.DOCKERHUB_PASSWORD}}
+      - name: Build the Docker image
+        run: docker build -t ${{secrets.DOCKERHUB_USERNAME}}/healthgg:latest -f dockerfile.development .
+      - name: taging
+        run: docker tag ${{secrets.DOCKERHUB_USERNAME}}/healthgg:latest ${{secrets.DOCKERHUB_USERNAME}}/healthgg:latest
+      - name: Push to Dockerhub
+        run: docker push ${{secrets.DOCKERHUB_USERNAME}}/healthgg:latest

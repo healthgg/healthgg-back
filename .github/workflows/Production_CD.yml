@@ -1,0 +1,19 @@
+name: Docker Production Image CD
+
+on:
+  workflow_run:
+    workflows: ['Docker Image develop CI']
+    types:
+      - completed
+
+jobs:
+  build:
+    #러너 실행
+    runs-on: self-hosted-production
+    steps:
+      - name: Pull Docker image
+        run: docker pull ystar500833177/healthggproduction:latest
+      - name: Delete Old docker container
+        run: docker rm -f healthgg-container || true
+      - name: Run Docker Container
+        run: docker run -d -p 3000:3000 -e NODE_ENV=production --network healthgg-network --name healthgg-container ystar500833177/healthggproduction:latest
