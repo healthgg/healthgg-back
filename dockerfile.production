@@ -1,32 +1,32 @@
-# Use an official Node.js runtime as a parent image for building
+# Build Stage
 FROM node:18-alpine AS build
 
-# Set the working directory in the container
+# Set working directory
 WORKDIR /app
 
-# Copy package.json and package-lock.json (or yarn.lock) and install dependencies
+# Install dependencies
 COPY package*.json ./
 RUN npm ci
 
-# Copy the rest of the application code
+# Copy the source code
 COPY . .
 
 # Build the application
 RUN npm run build
 
-# Use a smaller Node.js runtime for running the application
+# Production Stage
 FROM node:18-alpine AS production
 
-# Set the working directory in the container
+# Set working directory
 WORKDIR /app
 
-# Copy only the built files and production dependencies from the build stage
+# Copy the built application from the build stage
 COPY --from=build /app/dist ./dist
 COPY --from=build /app/node_modules ./node_modules
 COPY --from=build /app/package.json ./package.json
 
-# Expose the port the app runs on
+# Expose the application port
 EXPOSE 3000
 
-# Command to run the application
-CMD ["npm", "run", "start:prod"]
+# Run the application
+CMD ["node", "dist/main"]
