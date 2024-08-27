@@ -18,10 +18,10 @@ import { ScheduleModule } from '@nestjs/schedule';
     CacheModule.register({ isGlobal: true }),
     ConfigModule.forRoot({
       isGlobal: true,
-      // envFilePath:
-      //   process.env.NODE_ENV === 'production'
-      //     ? '.env.production'
-      //     : '.env.development',
+      envFilePath:
+        process.env.NODE_ENV === 'production'
+          ? '.env.production'
+          : '.env.development',
     }),
     TypeOrmModule.forRoot({
       type: 'mysql',
