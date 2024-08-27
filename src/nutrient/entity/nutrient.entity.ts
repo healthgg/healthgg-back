@@ -1,17 +1,27 @@
 import { foodModel } from 'src/food/entity/food.entity';
-import { Column, Entity, JoinColumn, OneToOne, PrimaryColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  OneToMany,
+  OneToOne,
+  PrimaryColumn,
+} from 'typeorm';
 import { INutrient } from '../interface/nutrient.interface';
+import { NutrientEnum } from '../enum/nutrient.enum';
+import { FoodBoardModel } from 'src/food/entity/foodBoard.entity';
 
 @Entity('nutrient')
 export class nutrientModel implements INutrient {
   @PrimaryColumn({ comment: '영양소 ID' })
   nutrient_id: number;
 
-  @OneToOne(() => foodModel, (food: foodModel) => food.food_id, {
-    cascade: true,
-  })
-  @JoinColumn({ name: 'food_id' })
-  food_id: foodModel;
+  @OneToMany(() => FoodBoardModel, (foodBoard) => foodBoard.nutrient)
+  foodBoards: FoodBoardModel[];
+
+  @OneToOne(() => foodModel, (food) => food.nutrient)
+  @JoinColumn({ name: 'food_id' }) // 외래 키로 설정
+  food: foodModel;
 
   @Column({ type: 'varchar', length: '255', comment: '음식 칼로리' })
   calory: string;
@@ -30,4 +40,12 @@ export class nutrientModel implements INutrient {
 
   @Column({ type: 'varchar', length: '255', comment: '단위' })
   unit: string;
+
+  @Column({
+    type: 'enum',
+    enum: Object.values(NutrientEnum),
+    default: NutrientEnum.PROTEIN,
+    comment: '주영양소',
+  })
+  mainNutrient: NutrientEnum;
 }
