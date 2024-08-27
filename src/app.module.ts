@@ -34,7 +34,7 @@ import { ScheduleModule } from '@nestjs/schedule';
       autoLoadEntities: true,
       synchronize: process.env.NODE_ENV === 'production' ? false : true,
       logging: true,
-      charset: 'utf8mb4',
+      charset: 'utf8',
       // collation: 'utf8mb4_unicode_ci',
     }),
     FitnessMachineModule,
