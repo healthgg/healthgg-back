@@ -9,7 +9,7 @@ on:
 jobs:
   build:
     #러너 실행
-    runs-on: server
+    runs-on: self-hosted
     steps:
       - name: Pull Docker image
         run: docker pull ystar500833177/healthgg:latest
