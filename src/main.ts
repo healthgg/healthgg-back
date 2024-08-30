@@ -22,13 +22,13 @@ async function bootstrap() {
   app.useGlobalPipes(new ValidationPipe());
   // Swagger 설정
   const config = new DocumentBuilder()
-    .setTitle('NestJS API')
-    .setDescription('The NestJS API description')
+    .setTitle('헬스GG API')
+    .setDescription('헬스GG API 명세서')
     .setVersion('1.0')
     .addTag('api')
     .build();
   const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('api-docs', app, document);
+  SwaggerModule.setup('api', app, document);
   const configService = app.get(ConfigService);
   await app.listen(3000, () => {
     console.log(configService.get('NODE_ENV'));

@@ -2,6 +2,7 @@ import {
   Body,
   Controller,
   Get,
+  InternalServerErrorException,
   Param,
   ParseIntPipe,
   Post,
@@ -10,16 +11,17 @@ import {
 } from '@nestjs/common';
 import { FoodService } from './food.service';
 import { CursorPageOptionsDto } from './cursor-page/cursor-page-option.dto';
-import { PostFoodArrayDto, PostFoodDto } from './dto/create_food.dto';
+import { CreateFoodDto } from './dto/create_food.dto';
 import { SearchService } from 'src/search/search.service';
 import { Response } from 'express';
+import { foodExcelDto } from './dto/create_food_excel.dto';
 
 @Controller('food')
 export class FoodController {
   constructor(private readonly foodService: FoodService) {}
 
   @Get(':type')
-  async getFoodList(
+  public async getFoodList(
     @Param('type', ParseIntPipe) type: number,
     @Query() cursorPageOptionsDto: CursorPageOptionsDto,
   ) {
@@ -31,14 +33,23 @@ export class FoodController {
   }
 
   @Post('share')
-  async postFoodList(@Body() body) {
+  public async postFoodList(
+    @Body() body: { data: CreateFoodDto },
+  ): Promise<void> {
+    console.log(body.data);
     await this.foodService.postFoodListArray(body.data);
   }
 
   @Post('excel')
-  async postFoodListExecl(@Body() body, @Res() res: Response) {
+  public async postFoodListExecl(
+    @Body() body: { data: foodExcelDto },
+    @Res() res: Response,
+  ) {
     const buffer = await this.foodService.postFoodListExcel(body.data);
 
+    if (!buffer) {
+      throw new InternalServerErrorException('엑셀파일을 생성하지 못했습니다.');
+    }
     res.header('Content-Disposition', 'attachment; filename=food_list.xlsx');
     res.setHeader(
       'Content-Type',
@@ -48,12 +59,12 @@ export class FoodController {
   }
 
   @Get()
-  async getSearchFoodList(@Query() search) {
+  public async getSearchFoodList(@Query() search) {
     return await this.foodService.searchFood(search);
   }
 
   @Get('board/:post_id')
-  async getFoodListDetail(@Param('post_id') post_id: string) {
+  public async getFoodListDetail(@Param('post_id') post_id: string) {
     return await this.foodService.getFoodDetail(post_id);
   }
 }

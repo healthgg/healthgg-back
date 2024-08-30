@@ -90,7 +90,7 @@ export async function generateFoodExcel(data) {
   const workbook = new ExcelJS.Workbook();
   const worksheet = workbook.addWorksheet('Sheet 1');
 
-  if (data.morning) {
+  if (data.Breakfast) {
     worksheet.columns = [
       { header: '', width: 20 },
       { header: '영양소 이름', key: 'food_name', width: 20 },

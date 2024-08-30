@@ -1,6 +1,9 @@
 import { Body, Controller, Get, Param, Post, Res } from '@nestjs/common';
 import { ExerciseVolumeService } from './exercise_volume.service';
-import { PostExerciseVolumeArrayDto } from './dto/crate_exercise_volme.dto';
+import {
+  CreateExerciseVolumeADto,
+  PostExerciseVolmeDto,
+} from './dto/create_exercise_volme.dto';
 import { Response } from 'express';
 
 @Controller('exercise_volume')
@@ -8,18 +11,20 @@ export class ExerciseVolumeController {
   constructor(private readonly exerciseVolumeService: ExerciseVolumeService) {}
 
   @Get(':post_id')
-  async getExerciseVolmesDetail(@Param('post_id') post_id: string) {
+  public async getExerciseVolmesDetail(@Param('post_id') post_id: string) {
     return await this.exerciseVolumeService.getExerciseVolmesId(post_id);
   }
 
   @Post('share')
-  async postExerciseVolmes(@Body() body: PostExerciseVolumeArrayDto) {
-    return await this.exerciseVolumeService.postExerciseVolmes(body.data);
+  public async postExerciseVolmes(
+    @Body() body: { data: CreateExerciseVolumeADto },
+  ) {
+    return await this.exerciseVolumeService.postExerciseVolmes(body);
   }
 
   @Post('excel')
-  async postExerciseVolmeExcel(
-    @Body() body: PostExerciseVolumeArrayDto,
+  public async postExerciseVolmeExcel(
+    @Body() body: { data: CreateExerciseVolumeADto },
     @Res() res: Response,
   ) {
     // Excel 파일 생성
