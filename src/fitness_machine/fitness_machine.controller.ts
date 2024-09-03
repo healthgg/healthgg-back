@@ -21,10 +21,12 @@ export class FitnessMachineController {
     @Param('type', ParseIntPipe) type: number,
     @Query() cursorPageOptionsDto: CursorPageOptionsDto,
   ): Promise<CursorPageDto<FitnessMachineModel>> {
-    return await this.fitnessService.getFitnessMachineList(
+    const result = await this.fitnessService.getFitnessMachineList(
       cursorPageOptionsDto,
       type,
     );
+
+    return result;
   }
 
   @Get()

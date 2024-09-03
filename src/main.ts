@@ -25,7 +25,14 @@ async function bootstrap() {
     .setTitle('헬스GG API')
     .setDescription('헬스GG API 명세서')
     .setVersion('1.0')
-    .addTag('api')
+    .addApiKey(
+      {
+        type: 'apiKey',
+        name: 'Authorization',
+        in: 'header',
+      },
+      'apiKey',
+    ) // API Key 인증 추가
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);

@@ -5,14 +5,6 @@ export async function generateVolumeExcel(data) {
   const worksheet = workbook.addWorksheet('Sheet 1');
 
   if (Object.keys(data[0])[0].includes('fitness')) {
-    // worksheet.columns = [
-    //   { header: '운동기구', key: 'fitness_machine_name', width: 20 },
-    //   { header: '반복 횟수', key: 'repetition', width: 20 },
-    //   { header: '세트 수', key: 'set', width: 20 },
-    //   { header: '중량', key: 'weight', width: 20 },
-    //   { header: '총 중량', key: 'total_weight', width: 20 },
-    // ];
-
     const titles = ['운동기구', '반복 횟수', '세트 수', '중량', '총 중량'];
     titles.forEach((title, index) => {
       worksheet.getCell(`A${index + 1}`).value = title;
@@ -48,12 +40,6 @@ export async function generateVolumeExcel(data) {
     for (let i = 0; i < data.length; i++) {
       const col = columns[i]; // Get the current column letter
 
-      worksheet.getRow(1);
-      worksheet.getRow(2);
-      worksheet.getRow(3);
-      worksheet.getRow(4);
-      worksheet.getRow(5);
-
       worksheet.getCell(`${col}1`).value = data[i].fitness_machine_name; // B1, C1, D1, etc.
       worksheet.getCell(`${col}2`).value = data[i].repetition; // B2, C2, D2, etc.
       worksheet.getCell(`${col}3`).value = data[i].set; // B3, C3, D3, etc.
@@ -62,24 +48,63 @@ export async function generateVolumeExcel(data) {
     }
   }
 
-  worksheet.getCell;
+  // 모든 셀 가운데 정렬 및 스타일 적용
+  worksheet.eachRow((row) => {
+    row.eachCell((cell) => {
+      cell.alignment = {
+        vertical: 'middle',
+        horizontal: 'center',
+      };
+      cell.font = {
+        size: 12,
+      };
+    });
+  });
 
+  // 제목 열의 스타일 적용
   worksheet.getColumn(1).eachCell((cell) => {
     cell.fill = {
       type: 'pattern',
       pattern: 'solid',
-      fgColor: { argb: '00000000' }, // 배경색 빨강
+      fgColor: { argb: '6385ff' }, // 배경색 파랑
     };
     cell.font = {
       color: { argb: 'FFFFFFFF' }, // 글자색 흰색
       bold: true,
-      size: 16,
+      size: 12,
     };
     cell.alignment = {
       vertical: 'middle',
       horizontal: 'center',
     };
   });
+
+  // A열 폰트 크기 설정
+
+  // 모든 셀 텍스트 크기에 맞게 열 너비 자동 조정
+  worksheet.columns.forEach((column) => {
+    let maxLength = 0;
+    column.eachCell({ includeEmpty: true }, (cell) => {
+      const cellValue = cell.value;
+      let cellLength = 0;
+
+      if (typeof cellValue === 'string') {
+        cellLength = cellValue.length;
+      } else if (typeof cellValue === 'number') {
+        cellLength = cellValue.toString().length;
+      } else if (cellValue instanceof Date) {
+        cellLength = cellValue.toLocaleString().length;
+      } else {
+        cellLength = 10; // 기본값
+      }
+
+      if (cellLength > maxLength) {
+        maxLength = cellLength;
+      }
+    });
+    column.width = maxLength < 10 ? 10 : maxLength + 2; // 최소 너비 10으로 설정
+  });
+
   // 파일을 버퍼로 저장
   const buffer = await workbook.xlsx.writeBuffer();
   return buffer;
@@ -126,17 +151,17 @@ export async function generateFoodExcel(data) {
       });
     });
 
-    // Style the header row
+    // 제목 열의 스타일 적용
     worksheet.getRow(1).eachCell((cell) => {
       cell.fill = {
         type: 'pattern',
         pattern: 'solid',
-        fgColor: { argb: '00000000' }, // Black background
+        fgColor: { argb: '6385ff' }, // 배경색 #6385ff
       };
       cell.font = {
-        color: { argb: 'FFFFFFFF' }, // White font
+        color: { argb: 'FFFFFFFF' }, // 글자색 흰색
         bold: true,
-        size: 16,
+        size: 12,
       };
       cell.alignment = {
         vertical: 'middle',
@@ -171,6 +196,30 @@ export async function generateFoodExcel(data) {
         horizontal: 'center',
       };
     });
+
+    // 모든 셀 가운데 정렬 및 중앙 정렬, 높이 설정
+    worksheet.eachRow((row, rowNumber) => {
+      row.height = 25; // 행 높이 설정 (필요에 따라 조정)
+      row.eachCell((cell) => {
+        cell.alignment = {
+          vertical: 'middle',
+          horizontal: 'center',
+        };
+      });
+    });
+
+    // 셀 너비 자동 조정
+    worksheet.columns.forEach((column) => {
+      let maxLength = 0;
+      column.eachCell({ includeEmpty: true }, (cell) => {
+        const cellLength = cell.value ? cell.value.toString().length : 10;
+        if (cellLength > maxLength) {
+          maxLength = cellLength;
+        }
+      });
+      column.width = maxLength < 10 ? 10 : maxLength + 2;
+    });
+
     // 파일을 버퍼로 저장
     const buffer = await workbook.xlsx.writeBuffer();
     return buffer;

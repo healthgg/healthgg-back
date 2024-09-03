@@ -1,14 +1,26 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
-
 import { OpensearchClient } from 'nestjs-opensearch';
+import {
+  canBeChoseong,
+  canBeJongseong,
+  canBeJungseong,
+  getChoseong,
+} from 'es-hangul';
 
 @Injectable()
 export class SearchService {
   constructor(private readonly esService: OpensearchClient) {}
 
   public async searchFood(q: string) {
-    if (!q.search) {
+    const { search } = q;
+    const stringSearch: string = search.toString();
+    const IsChoseong: Boolean = canBeJongseong(stringSearch);
+
+    if (!search || search.length < 1) {
       throw new BadRequestException('검색어를 입력해주세요');
+    }
+
+    if (IsChoseong) {
     }
 
     let results = [];
