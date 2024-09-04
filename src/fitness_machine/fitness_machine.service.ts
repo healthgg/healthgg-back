@@ -26,19 +26,17 @@ export class FitnessMachineService {
     private readonly searchService: SearchService,
   ) {}
 
-  async getFitnessMachineList(
+  public async getFitnessMachineList(
     cursorPageOptionsDto: CursorPageOptionsDto,
     type: number,
-  ) {
+  ): Promise<CursorPageDto<FitnessMachineModel>> {
     let take = cursorPageOptionsDto?.take || 4;
 
-    if (!Object.values(BodyPartEnum).includes(type)) {
+    if (type !== 0 && !Object.values(BodyPartEnum).includes(type)) {
       throw new BadRequestException('존재하지 않는 운동부위');
     }
 
-    console.log(take);
-    console.log(type);
-    const [machines, total] = await this.fitnessMachineRepository
+    let query = this.fitnessMachineRepository
       .createQueryBuilder('fitness_machine')
       .leftJoinAndSelect('fitness_machine.body_part', 'body_part')
       .select([
@@ -49,13 +47,18 @@ export class FitnessMachineService {
         'body_part.body_part_id',
         'body_part.body_part_type',
       ])
-      .where(
-        'body_part.body_part_type = :body_part_type AND fitness_machine.fitness_machine_id < :cursorId',
-        {
-          body_part_type: type,
-          cursorId: cursorPageOptionsDto.cursorId,
-        },
-      )
+      .where('fitness_machine.fitness_machine_id < :cursorId', {
+        cursorId: cursorPageOptionsDto.cursorId,
+      });
+
+    //body type이 1~5로 들어오면 운동부위별 조회
+    if (type !== 0) {
+      query = query.andWhere('body_part.body_part_type = :body_part_type', {
+        body_part_type: type,
+      });
+    }
+
+    const [machines, total] = await query
       .orderBy('fitness_machine.fitness_machine_id', 'DESC')
       .take(take)
       .getManyAndCount();
@@ -92,7 +95,7 @@ export class FitnessMachineService {
     return new CursorPageDto(machines, cursorPageMetaDto);
   }
 
-  async getAllFitnessMachines() {
+  public async getAllFitnessMachines() {
     const cacheMachines = await this.cacheManager.get('machines');
     if (!cacheMachines) {
       console.log('Cache Miss');
@@ -103,7 +106,7 @@ export class FitnessMachineService {
     return JSON.parse(await this.cacheManager.get('machines'));
   }
 
-  async searchFitnessMachine(search) {
+  public async searchFitnessMachine(search) {
     return await this.searchService.searchFitness(search);
   }
 }

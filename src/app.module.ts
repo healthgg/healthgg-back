@@ -18,10 +18,10 @@ import { ScheduleModule } from '@nestjs/schedule';
     CacheModule.register({ isGlobal: true }),
     ConfigModule.forRoot({
       isGlobal: true,
-      envFilePath:
-        process.env.NODE_ENV === 'production'
-          ? '.env.production'
-          : '.env.development',
+      //   envFilePath:
+      //     process.env.NODE_ENV === 'production'
+      //       ? '.env.production'
+      //       : '.env.development',
     }),
     TypeOrmModule.forRoot({
       type: 'mysql',
@@ -33,7 +33,8 @@ import { ScheduleModule } from '@nestjs/schedule';
       entities: [__dirname + '/**/*.entity.*'],
       autoLoadEntities: true,
       //synchronize: process.env.NODE_ENV === 'production' ? false : true,
-      synchronize: true,
+      synchronize: false,
+      //synchronize: true,
       logging: true,
       charset: 'utf8',
       // collation: 'utf8mb4_unicode_ci',

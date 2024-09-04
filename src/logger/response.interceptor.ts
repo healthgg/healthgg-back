@@ -11,15 +11,14 @@ import { Response } from 'express';
 @Injectable()
 export class ResponseInterceptor implements NestInterceptor {
   intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
-    const ctx = context.switchToHttp();
-    const response: Response = ctx.getResponse<Response>();
-
     return next.handle().pipe(
       map((data) => {
-        // 응답 데이터 수정
-        return {
-          data,
-        };
+        // 이미 data 객체인 경우 그대로 반환
+        if (data && data.data) {
+          return data;
+        }
+        // 그렇지 않은 경우 data로 감싸서 반환
+        return { data };
       }),
     );
   }

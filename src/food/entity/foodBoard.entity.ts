@@ -9,20 +9,18 @@ import {
 import { MealEnum } from '../enum/meal.enum';
 import { foodModel } from './food.entity';
 import { nutrientModel } from 'src/nutrient/entity/nutrient.entity';
+import { BoardBaseModel } from 'src/common/entity/board_base.entity';
 
 @Entity('food_board')
-export class FoodBoardModel {
+export class FoodBoardModel extends BoardBaseModel {
   @PrimaryGeneratedColumn()
   food_Board_id: number;
 
-  @Column({ type: 'varchar' })
-  board_id: string;
+  // @Column({ type: 'int' })
+  // food_id: number;
 
-  @Column({ type: 'int' })
-  food_id: number;
-
-  @Column({ type: 'int' })
-  nutrient_id: number;
+  // @Column({ type: 'int' })
+  // nutrient_id: number;
 
   @ManyToOne(() => foodModel, (food) => food.foodBoards)
   @JoinColumn({ name: 'food_id' })
@@ -32,13 +30,11 @@ export class FoodBoardModel {
   @JoinColumn({ name: 'nutrient_id' })
   nutrient: nutrientModel;
 
-  @Column({
-    type: 'enum',
-    enum: Object.values(MealEnum),
-    comment: '식사시간',
-  })
-  meal: MealEnum;
-
-  @CreateDateColumn({ type: 'timestamp' })
-  created_at: Date;
+  food_imageurl?: string[];
+  // @Column({
+  //   type: 'enum',
+  //   enum: Object.values(MealEnum),
+  //   comment: '식사시간',
+  // })
+  // meal: MealEnum;
 }

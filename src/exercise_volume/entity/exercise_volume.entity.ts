@@ -37,9 +37,6 @@ export class ExerciseVolumeModel implements IExercise_volume {
   @Column('decimal', { precision: 10, scale: 1, comment: '횟수 x 세트 x 중량' })
   total_weight: number;
 
-  @Column({ type: 'varchar', length: '50', comment: '운동 볼륨 게시글 고유값' })
-  post_id: string;
-
   @CreateDateColumn({ type: 'timestamp' })
   created_at: Date;
 }
