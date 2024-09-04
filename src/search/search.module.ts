@@ -1,11 +1,11 @@
 import { Module } from '@nestjs/common';
 import { SearchService } from './search.service';
-import { OpensearchModule } from 'nestjs-opensearch';
+import { ElasticsearchModule } from '@nestjs/elasticsearch';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 
 @Module({
   imports: [
-    OpensearchModule.forRootAsync({
+    ElasticsearchModule.registerAsync({
       imports: [ConfigModule],
       useFactory: (configService: ConfigService) => ({
         node: configService.get<string>('ES_HOST'),
