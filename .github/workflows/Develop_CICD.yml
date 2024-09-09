@@ -38,7 +38,7 @@ jobs:
           port: ${{ secrets.SSH_PORT_DEV }}
           script: |
             docker login -u ${{ secrets.DOCKERHUB_USERNAME }} -p ${{ secrets.DOCKERHUB_PASSWORD }}
-            echo "${{ secrets.DOCKER_COMPOSE_YML }}" > /app/docker-compose.yml
+            echo "${{ secrets.DOCKER_COMPOSE_YML }}" > /home/ubuntu/app/docker-compose.yml
             docker-compose down
             docker pull ${{secrets.DOCKERHUB_USERNAME}}/healthgg:latest
             docker-compose pull
