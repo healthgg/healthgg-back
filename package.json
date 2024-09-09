@@ -21,7 +21,7 @@
   },
   "dependencies": {
     "@aws-sdk/client-opensearch": "^3.632.0",
-    "@elastic/elasticsearch": "^8.15.0",
+    "@elastic/elasticsearch": "^7.2.1",
     "@nestjs/axios": "^3.0.2",
     "@nestjs/cache-manager": "^2.2.2",
     "@nestjs/common": "^10.3.3",

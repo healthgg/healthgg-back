@@ -20,6 +20,7 @@ export class SearchService {
     }
 
     const keyword = stringSearch;
+    console.log(keyword);
     try {
       const result = await this.esService.search({
         index: 'indexfood',
@@ -27,27 +28,42 @@ export class SearchService {
           query: {
             bool: {
               should: [
-                { match: { food_name: { query: keyword } } },
-                { match: { food_notice: { query: keyword } } },
+                {
+                  match: {
+                    food_name: {
+                      query: keyword,
+                      //analyzer: 'ngram_analyzer',
+                    },
+                  },
+                },
+                {
+                  match: {
+                    food_notice: {
+                      query: keyword,
+                      // analyzer: 'ngram_analyzer',
+                    },
+                  },
+                },
               ],
             },
           },
         },
       });
 
-      const hits = result.hits.hits;
+      const hits = result.body.hits.hits;
 
       if (hits.length === 0) {
         throw new BadRequestException('검색 결과가 없습니다');
       }
 
-      // return hits.map((item) => ({
-      //   food_name: item._source.food_name,
-      //   food_notice: item._source.food_notice,
-      //   food_imageurl: item._source.food_imageurl,
-      //   score: item._score,
-      // }));
+      return hits.map((item) => ({
+        food_name: item._source.food_name,
+        food_notice: item._source.food_notice,
+        food_imageurl: item._source.food_imageurl,
+        score: item._score,
+      }));
     } catch (error) {
+      console.error(error);
       throw new BadRequestException('검색 중 오류가 발생했습니다');
     }
   }
@@ -80,7 +96,7 @@ export class SearchService {
       });
 
       console.log(result);
-      let arr = result.hits.hits;
+      let arr = result.body.hits.hits;
 
       if (arr.length === 0) {
         throw new BadRequestException('검색 결과가 없습니다');

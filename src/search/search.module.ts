@@ -13,6 +13,10 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
           username: configService.get<string>('ES_USERNAME'), // Elasticsearch 사용자 이름
           password: configService.get<string>('ES_PASSWORD'), // Elasticsearch 비밀번호
         },
+        maxRetries: 10,
+        requestTimeout: 60000,
+        pingTimeout: 60000,
+
         ssl: {
           // 개발 환경에서는 false, 프로덕션에서는 true로 설정
           rejectUnauthorized: false,
