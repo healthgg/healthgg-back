@@ -37,6 +37,6 @@ jobs:
           password: ${{ secrets.SSH_PASSWORD_DEV }}
           port: ${{ secrets.SSH_PORT_DEV }}
           script: |
-            docker rm -f healthgg-container || true
-            docker pull ${{secrets.DOCKERHUB_USERNAME}}/healthggproduction:latest
-            docker run -d -p 3000:3000 -e NODE_ENV=production --network healthgg-network --name healthgg-container ${{secrets.DOCKERHUB_USERNAME}}/healthggproduction:latest
+            docker-compose down
+            docker-compose pull
+            docker-compose up -d
