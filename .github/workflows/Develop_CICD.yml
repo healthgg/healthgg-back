@@ -37,9 +37,7 @@ jobs:
           password: ${{ secrets.SSH_PASSWORD_DEV }}
           port: ${{ secrets.SSH_PORT_DEV }}
           script: |
-            docker login -u ${{ secrets.DOCKERHUB_USERNAME }} -p ${{ secrets.DOCKERHUB_PASSWORD }}
-            echo "${{ secrets.DOCKER_COMPOSE_YML }}" > /home/ubuntu/app/docker-compose.yml
-            docker-compose down
             docker pull ${{secrets.DOCKERHUB_USERNAME}}/healthgg:latest
-            docker-compose pull
-            docker-compose up -d
+            docker stop healthgg-container || true
+            docker rm healthgg-container || true
+            docker run -d  --name healthgg  -p 3000:3000 --env-file /path/to/.env.development ${{ secrets.DOCKERHUB_USERNAME }}/healthgg:latest
