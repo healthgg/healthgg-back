@@ -27,7 +27,8 @@ services:
     depends_on:
       - elasticsearch
 
-  nestjs-app:
+  heatlgg:
+    hostname: healthgg-nestjs
     build:
       context: . # 현재 디렉토리에서 Dockerfile을 찾음
     ports:
