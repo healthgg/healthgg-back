@@ -38,7 +38,7 @@ jobs:
           port: ${{ secrets.SSH_PORT_DEV }}
           script: |
             docker login -u ${{ secrets.DOCKERHUB_USERNAME }} -p ${{ secrets.DOCKERHUB_PASSWORD }}
-            cd /usr/local/bin/docker-compose
+            cd /usr/local/bin
             docker-compose down
             docker pull ${{secrets.DOCKERHUB_USERNAME}}/healthgg:latest
             docker-compose pull
