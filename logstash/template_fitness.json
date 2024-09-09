@@ -1,0 +1,40 @@
+{
+  "index_patterns": ["indexfitness"],
+  "settings": {
+    "number_of_shards": 1,
+    "number_of_replicas": 1,
+    "analysis": {
+      "analyzer": {
+        "nori_analyzer": {
+          "type": "custom",
+          "tokenizer": "nori_tokenizer",
+          "filter": ["nori_part_of_speech", "lowercase"]
+        }
+      },
+      "tokenizer": {
+        "nori_tokenizer": {
+          "type": "nori_tokenizer",
+          "decompound_mode": "mixed"
+        }
+      },
+      "filter": {
+        "nori_part_of_speech": {
+          "type": "nori_part_of_speech_filter",
+          "stoptags": ["Josa", "Eomi"]
+        }
+      }
+    }
+  },
+  "mappings": {
+    "properties": {
+      "fitness_machine_notice": {
+        "type": "text",
+        "analyzer": "nori_analyzer"
+      },
+      "fitness_machine_name": {
+        "type": "text",
+        "analyzer": "nori_analyzer"
+      }
+    }
+  }
+}

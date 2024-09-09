@@ -1,15 +1,27 @@
-import { Injectable } from '@nestjs/common';
-
-import { OpensearchClient } from 'nestjs-opensearch';
+import { BadRequestException, Injectable } from '@nestjs/common';
+import { ElasticsearchService } from '@nestjs/elasticsearch';
+import {
+  canBeChoseong,
+  canBeJongseong,
+  canBeJungseong,
+  getChoseong,
+} from 'es-hangul';
 
 @Injectable()
 export class SearchService {
-  constructor(private readonly esService: OpensearchClient) {}
+  constructor(private readonly esService: ElasticsearchService) {}
 
-  async searchFood(q: string) {
+  public async searchFood(q: string) {
+    const { search } = q;
+    const stringSearch: string = search.toString();
+
+    if (!search || search.length < 1) {
+      throw new BadRequestException('검색어를 입력해주세요');
+    }
+
+    const keyword = stringSearch;
+    console.log(keyword);
     try {
-      let results = [];
-      const keyword = q.search;
       const result = await this.esService.search({
         index: 'indexfood',
         body: {
@@ -18,12 +30,18 @@ export class SearchService {
               should: [
                 {
                   match: {
-                    food_name: keyword,
+                    food_name: {
+                      query: keyword,
+                      //analyzer: 'ngram_analyzer',
+                    },
                   },
                 },
                 {
                   match: {
-                    food_notice: keyword,
+                    food_notice: {
+                      query: keyword,
+                      // analyzer: 'ngram_analyzer',
+                    },
                   },
                 },
               ],
@@ -32,62 +50,71 @@ export class SearchService {
         },
       });
 
-      let arr = result.body.hits.hits;
+      const hits = result.body.hits.hits;
 
-      arr.map((item) => {
-        results.push({
-          food_name: item._source.food_name,
-          food_notice: item._source.food_notice,
-          food_imageurl: item._source.food_imageurl,
-          score: item._score,
-        });
-      });
-      return results; // 결과에서 문서들 추출
-    } catch (e) {
-      console.error(e);
+      if (hits.length === 0) {
+        throw new BadRequestException('검색 결과가 없습니다');
+      }
+
+      return hits.map((item) => ({
+        food_name: item._source.food_name,
+        food_notice: item._source.food_notice,
+        food_imageurl: item._source.food_imageurl,
+        score: item._score,
+      }));
+    } catch (error) {
+      console.error(error);
+      throw new BadRequestException('검색 중 오류가 발생했습니다');
     }
   }
 
-  async searchFitness(q: string) {
+  public async searchFitness(q: string) {
+    const { search } = q;
+    const stringSearch: string = search.toString();
+    if (!q.search) {
+      throw new BadRequestException('검색어를 입력해주세요');
+    }
+    if (!search || search.length < 1) {
+      throw new BadRequestException('검색어를 입력해주세요');
+    }
+
+    const keyword = stringSearch;
+    console.log(keyword);
     try {
-      let results = [];
-      const keyword = q.search;
       const result = await this.esService.search({
-        index: 'indexfitnessmachine',
+        index: 'indexfood',
         body: {
           query: {
             bool: {
               should: [
-                {
-                  match: {
-                    finess_machine_name: keyword,
-                  },
-                },
-                {
-                  match: {
-                    finess_machine_notice: keyword,
-                  },
-                },
+                { match: { finess_machine_name: { query: keyword } } },
+                { match: { finess_machine_notice: { query: keyword } } },
               ],
             },
           },
         },
       });
 
+      console.log(result);
       let arr = result.body.hits.hits;
 
-      arr.map((item) =>
-        results.push({
-          finess_machine_name: item._source.finess_machine_name,
-          finess_machine_imageurl: item._source.finess_machine_imageurl,
-          finess_machine_notice: item._source.finess_machine_notice,
-          score: item._score,
-        }),
-      );
+      if (arr.length === 0) {
+        throw new BadRequestException('검색 결과가 없습니다');
+      }
 
-      return results;
+      // arr.map((item) =>
+      //   result.push({
+      //     finess_machine_name: item._source.finess_machine_name,
+      //     finess_machine_imageurl: item._source.finess_machine_imageurl,
+      //     finess_machine_notice: item._source.finess_machine_notice,
+      //     score: item._score,
+      //   }),
+      // );
+
+      return result;
     } catch (e) {
       console.error(e);
+      throw new BadRequestException('검색 중 오류가 발생했습니다');
     }
   }
 }

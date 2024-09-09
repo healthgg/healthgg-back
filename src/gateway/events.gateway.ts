@@ -26,7 +26,6 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect {
   handleConnection(client: any, ...args: any[]): number {
     this.clientsCount.push(client.id);
     this.server.emit('clientsCount', this.clientsCount);
-
     console.log(`Client connected: ${client.id}`);
     console.log(this.clientsCount);
     console.log(this.clientsCount.length);

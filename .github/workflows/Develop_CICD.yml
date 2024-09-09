@@ -1,4 +1,4 @@
-name: Docker Develop Image CI
+name: Docker Develop Image CI/CD
 
 on:
   pull_request:
@@ -19,9 +19,24 @@ jobs:
           DOCKER_USERNAME: ${{secrets.DOCKERHUB_USERNAME}}
           DOCKER_PASSWORD: ${{secrets.DOCKERHUB_PASSWORD}}
         run: docker login -u ${{secrets.DOCKERHUB_USERNAME}} -p ${{secrets.DOCKERHUB_PASSWORD}}
+
       - name: Build the Docker image
         run: docker build -t ${{secrets.DOCKERHUB_USERNAME}}/healthgg:latest -f dockerfile.development .
+
       - name: taging
         run: docker tag ${{secrets.DOCKERHUB_USERNAME}}/healthgg:latest ${{secrets.DOCKERHUB_USERNAME}}/healthgg:latest
+
       - name: Push to Dockerhub
         run: docker push ${{secrets.DOCKERHUB_USERNAME}}/healthgg:latest
+
+      - name: Deploy to Remote Server via SSH
+        uses: appleboy/ssh-action@v0.1.5
+        with:
+          host: ${{ secrets.SSH_HOST_DEV }}
+          username: ${{ secrets.SSH_USERNAME_DEV }}
+          password: ${{ secrets.SSH_PASSWORD_DEV }}
+          port: ${{ secrets.SSH_PORT_DEV }}
+          script: |
+            docker rm -f healthgg-container || true
+            docker pull ${{secrets.DOCKERHUB_USERNAME}}/healthggproduction:latest
+            docker run -d -p 3000:3000 -e NODE_ENV=production --network healthgg-network --name healthgg-container ${{secrets.DOCKERHUB_USERNAME}}/healthggproduction:latest

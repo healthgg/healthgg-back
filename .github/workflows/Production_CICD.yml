@@ -1,4 +1,4 @@
-name: Docker Production Image CI
+name: Docker Production Image CI/CD
 
 on:
   pull_request:
@@ -9,19 +9,29 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v3
-      - name: Set ENV
-        run: |
-          echo "${{ secrets.DOT_ENV_PRO }}" > .env.production
-        shell: bash
       - name: Login Dockerhub
         env:
           DOCKER_USERNAME: ${{secrets.DOCKERHUB_USERNAME}}
           DOCKER_PASSWORD: ${{secrets.DOCKERHUB_PASSWORD}}
         run: docker login -u ${{secrets.DOCKERHUB_USERNAME}} -p ${{secrets.DOCKERHUB_PASSWORD}}
+
       - name: Build the Docker image
         run: docker build -t ${{secrets.DOCKERHUB_USERNAME}}/healthggproduction:latest -f dockerfile.production .
+
       - name: taging
         run: docker tag ${{secrets.DOCKERHUB_USERNAME}}/healthggproduction:latest ${{secrets.DOCKERHUB_USERNAME}}/healthggproduction:latest
+
       - name: Push to Dockerhub
         run: docker push ${{secrets.DOCKERHUB_USERNAME}}/healthggproduction:latest
+
+      - name: Deploy to Remote Server via SSH
+        uses: appleboy/ssh-action@v0.1.5
+        with:
+          host: ${{ secrets.SSH_HOST_PRO }}
+          username: ${{ secrets.SSH_USERNAME_PRO }}
+          password: ${{ secrets.SSH_PASSWORD_PRO }}
+          port: ${{ secrets.SSH_PORT_PRO }}
+          script: |
+            docker-compose down  
+            docker-compose pull   
+            docker-compose up -d
