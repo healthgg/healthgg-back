@@ -40,9 +40,10 @@ jobs:
           username: ${{ secrets.SSH_USERNAME_DEV }}
           password: ${{ secrets.SSH_PASSWORD_DEV }}
           port: ${{ secrets.SSH_PORT_DEV }}
-          source: 'docker-compose.yml,.env'
+          source: '.'
           target: '/home/ubuntu/apps'
           strip_components: 0
+          overwrite: true
 
       - name: Deploy to Remote Server via SSH
         uses: appleboy/ssh-action@v0.1.5
