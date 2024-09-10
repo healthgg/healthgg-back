@@ -30,21 +30,19 @@ jobs:
           docker-compose -f docker-compose.yml build
           docker-compose -f docker-compose.yml push
 
-      - name: Copy docker-compose.yml to remote server
+      - name: List files
+        run: ls -la
+
+      - name: Copy docker-compose.yml and .env to remote server
         uses: appleboy/scp-action@master
         with:
           host: ${{ secrets.SSH_HOST_DEV }}
           username: ${{ secrets.SSH_USERNAME_DEV }}
           password: ${{ secrets.SSH_PASSWORD_DEV }}
           port: ${{ secrets.SSH_PORT_DEV }}
-          source: |
-            docker-compose.yml
-            .env
-          target: '/app'
-          overwrite: true
-          timeout: 60s
-          command_timeout: 15m
-          debug: true
+          source: 'docker-compose.yml,.env'
+          target: '/apps'
+          strip_components: 0
 
       - name: Deploy to Remote Server via SSH
         uses: appleboy/ssh-action@v0.1.5
@@ -54,6 +52,6 @@ jobs:
           password: ${{ secrets.SSH_PASSWORD_DEV }}
           port: ${{ secrets.SSH_PORT_DEV }}
           script: |
-            cd /app
+            cd /apps
             docker-compose pull
             docker-compose up -d
