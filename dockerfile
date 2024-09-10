@@ -8,7 +8,7 @@ COPY package*.json ./
 
 RUN npm ci
 
-COPY --chown=node:node .env ./
+# COPY --chown=node:node .env ./
 COPY . .
 
 CMD ["npm", "run","start:dev"]
