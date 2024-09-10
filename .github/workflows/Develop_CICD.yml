@@ -43,6 +43,7 @@ jobs:
           source: '.'
           target: '/home/ubuntu/apps'
           strip_components: 0
+          overwrite: true
 
       - name: Deploy to Remote Server via SSH
         uses: appleboy/ssh-action@v0.1.5
