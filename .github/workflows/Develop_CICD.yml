@@ -40,7 +40,7 @@ jobs:
           username: ${{ secrets.SSH_USERNAME_DEV }}
           password: ${{ secrets.SSH_PASSWORD_DEV }}
           port: ${{ secrets.SSH_PORT_DEV }}
-          source: 'docker-compose.yml,.env'
+          source: '.'
           target: '/home/ubuntu/apps'
           strip_components: 0
 
