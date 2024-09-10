@@ -38,7 +38,8 @@ jobs:
           password: ${{ secrets.SSH_PASSWORD_DEV }}
           port: ${{ secrets.SSH_PORT_DEV }}
           source: 'docker-compose.yml'
-          target: '/app'
+          target: '/nestapp'
+          overwrite: true
 
       - name: Deploy to Remote Server via SSH
         uses: appleboy/ssh-action@v0.1.5
