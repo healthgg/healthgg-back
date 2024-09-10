@@ -10,6 +10,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
+
       - name: Set ENV
         run: |
           echo "${{ secrets.DOT_ENV_DEV }}" > .env
@@ -20,33 +21,10 @@ jobs:
           DOCKER_PASSWORD: ${{secrets.DOCKERHUB_PASSWORD}}
         run: docker login -u ${{secrets.DOCKERHUB_USERNAME}} -p ${{secrets.DOCKERHUB_PASSWORD}}
 
-      - name: Install Docker Compose
-        run: |
-          sudo apt-get update
-          sudo apt-get install docker-compose -y
-
       - name: Build and push Docker images
         run: |
           docker-compose -f docker-compose.yml build
           docker-compose -f docker-compose.yml push
-
-      - name: List files
-        run: ls -la
-
-      - name: Copy docker-compose.yml and .env to remote server
-        uses: appleboy/scp-action@master
-        with:
-          host: ${{ secrets.SSH_HOST_DEV }}
-          username: ${{ secrets.SSH_USERNAME_DEV }}
-          password: ${{ secrets.SSH_PASSWORD_DEV }}
-          port: ${{ secrets.SSH_PORT_DEV }}
-          source: '.'
-          target: '/home/ubuntu/apps'
-          strip_components: 0
-          overwrite: true
-          timeout: 5m # Increase timeout as needed
-          command_timeout: 30m # Increase command timeout as needed
-          debug: true
 
       - name: Deploy to Remote Server via SSH
         uses: appleboy/ssh-action@v0.1.5
@@ -57,5 +35,8 @@ jobs:
           port: ${{ secrets.SSH_PORT_DEV }}
           script: |
             cd '/home/ubuntu/apps'
+            git pull origin develop
+            docker-compose down
             docker-compose pull
-            docker-compose up -d
+            docker system prune -af
+            docker-compose up -d --force-recreate
