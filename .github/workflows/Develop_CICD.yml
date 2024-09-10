@@ -40,8 +40,6 @@ jobs:
           port: ${{ secrets.SSH_PORT_DEV }}
           script: |
             cd '/home/ubuntu/apps'
-            git remote set-url origin git@github.com:healthgg/healthgg-back.git
+            git pull origin develop
             docker-compose down
-            docker-compose pull
-            docker system prune -af
-            docker-compose up -d --force-recreate
+            docker-compose up -d --build
