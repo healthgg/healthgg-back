@@ -44,6 +44,9 @@ jobs:
           target: '/home/ubuntu/apps'
           strip_components: 0
           overwrite: true
+          timeout: 5m # Increase timeout as needed
+          command_timeout: 30m # Increase command timeout as needed
+          debug: true
 
       - name: Deploy to Remote Server via SSH
         uses: appleboy/ssh-action@v0.1.5
