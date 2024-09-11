@@ -1,14 +1,20 @@
+# Use node:18-alpine as base image
 FROM node:18-alpine As Development
 
+# Set working directory
 WORKDIR /app
 
-COPY --chown=node:node . ./
-
+# Copy package.json and package-lock.json
 COPY package*.json ./
 
+# Install dependencies
 RUN npm ci
 
-# COPY --chown=node:node .env ./
-COPY . .
+# Copy the rest of the application files
+COPY --chown=node:node . .
 
-CMD ["npm", "run","start:dev"]
+# Expose the necessary port (optional if needed)
+EXPOSE 3000
+
+# Start the application
+CMD ["npm", "run", "start:dev"]
