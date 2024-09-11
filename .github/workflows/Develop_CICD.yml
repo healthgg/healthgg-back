@@ -21,8 +21,10 @@ jobs:
           DOCKER_PASSWORD: ${{secrets.DOCKERHUB_PASSWORD}}
         run: docker login -u ${{secrets.DOCKERHUB_USERNAME}} -p ${{secrets.DOCKERHUB_PASSWORD}}
 
-      - name: Pull latest changes
-        run: git pull origin develop
+      - name: Reset local branch to match remote
+        run: |
+          git fetch origin
+          git reset --hard origin/develop
 
       - name: Build and push Docker images
         run: |
