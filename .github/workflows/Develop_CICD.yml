@@ -12,6 +12,10 @@ jobs:
       - name: Check out the repository
         uses: actions/checkout@v3
 
+      - name: Set ENV
+        run: |
+          echo "ELASTIC_VERSION=${{ secrets.DOT_ENV_DEV }}" >> .env
+
       - name: Copy files to remote server
         uses: appleboy/scp-action@master
         with:
