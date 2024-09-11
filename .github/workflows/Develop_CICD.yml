@@ -10,32 +10,18 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
+        with:
+          path: /home/ubuntu/app # 소스를 특정 디렉토리로 가져옴
 
-      - name: Set ENV
-        run: |
-          echo "${{ secrets.DOT_ENV_DEV }}" > .env
-
-      - name: Login Dockerhub
-        env:
-          DOCKER_USERNAME: ${{secrets.DOCKERHUB_USERNAME}}
-          DOCKER_PASSWORD: ${{secrets.DOCKERHUB_PASSWORD}}
-        run: docker login -u ${{secrets.DOCKERHUB_USERNAME}} -p ${{secrets.DOCKERHUB_PASSWORD}}
-
-      - name: Reset local branch to match remote
-        run: |
-          git fetch origin
-          git reset --hard origin/develop
-
-      - name: Build and push Docker images
-        run: |
-          docker-compose -f docker-compose.yml build
-          docker-compose -f docker-compose.yml push
-
-      - name: Stop existing containers
-        run: docker-compose down
-
-      - name: Start new containers
-        run: docker-compose up -d --build
-
-      - name: Clean up
-        run: docker system prune -af
+      - name: Deploy ELK Stack
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SSH_HOST_DEV }} # 서버 IP 주소
+          username: ${{ secrets.SSH_USERNAME_DEV }} # 서버 사용자 이름
+          password: ${{ secrets.SSH_PASSWORD_DEV }} # SSH 개인 키
+          port: ${{ secrets.SSH_PORT_DEV }} # SSH 포트 (기본값: 22)
+          script: |
+            cd /home/ubuntu/app  
+            docker-compose down      
+            docker-compose pull      
+            docker-compose up -d
