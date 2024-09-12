@@ -19,6 +19,9 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y docker-compose
 
+      - name: SET ENV
+        run: echo "${{ secrets.DOT_ENV_DEV }}" >> .env
+
       - name: Log in to Docker Hub
         uses: docker/login-action@v2
         with:
@@ -28,9 +31,6 @@ jobs:
         run: |
           docker-compose -f docker-compose.yml build
           docker-compose -f docker-compose.yml push
-
-      - name: SET ENV
-        run: echo "${{ secrets.DOT_ENV_DEV }}" >> .env
 
       - name: Deploy ELK Stack
         uses: appleboy/ssh-action@master
