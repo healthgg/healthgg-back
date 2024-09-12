@@ -5,6 +5,7 @@ services:
     container_name: healthgg-nestjs
     build:
       context: .
+      dockerfile: Dockerfile
     ports:
       - '3000:3000'
     environment:
@@ -16,11 +17,12 @@ services:
 
   elasticsearch:
     container_name: elasticsearch
-    build:
-      context: elasticsearch/
-      dockerfile: Dockerfile
-      args:
-        ELASTIC_VERSION: ${ELASTIC_VERSION}
+    build: ./elasticsearch
+    # build:
+    # context: ./elasticsearch
+    # dockerfile: Dockerfile
+    # args:
+    #   ELASTIC_VERSION: ${ELASTIC_VERSION}
     volumes:
       - elasticsearch:/usr/share/elasticsearch/data
     ports:
@@ -37,11 +39,12 @@ services:
 
   logstash:
     container_name: logstash
-    build:
-      context: ./logstash
-      dockerfile: Dockerfile
-      args:
-        ELASTIC_VERSION: ${ELASTIC_VERSION}
+    build: ./logstash
+    # build:
+    #   context: ./logstash
+    #   dockerfile: Dockerfile
+    #   args:
+    #     ELASTIC_VERSION: ${ELASTIC_VERSION}
     volumes:
       - ./logstash/pipeline:/usr/share/logstash/pipeline
       - ./logstash/config/logstash.yml:/usr/share/logstash/config/logstash.yml
@@ -58,11 +61,12 @@ services:
 
   kibana:
     container_name: kibana
-    build:
-      context: ./kibana
-      dockerfile: Dockerfile
-      args:
-        ELASTIC_VERSION: ${ELASTIC_VERSION}
+    build: ./kibana
+    # build:
+    #   context: ./kibana
+    #   dockerfile: Dockerfile
+    #   args:
+    #     ELASTIC_VERSION: ${ELASTIC_VERSION}
     volumes:
       - ./kibana/config/kibana.yml:/usr/share/kibana/config/kibana.yml
     ports:
