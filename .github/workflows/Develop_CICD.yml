@@ -35,6 +35,6 @@ jobs:
           port: ${{ secrets.SSH_PORT_DEV }} # SSH 포트 (기본값: 22)
           script: |
             cd /home/ubuntu/healthgg-back 
-            docker-compose down      
-            docker-compose pull      
-            docker-compose up -d
+            git pull origin develop            
+            docker-compose down               
+            docker-compose up -d --build
