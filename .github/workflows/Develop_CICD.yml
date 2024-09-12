@@ -44,5 +44,4 @@ jobs:
             echo "${{ secrets.DOT_ENV_DEV }}" >> .env
             git pull origin develop
             docker-compose -f docker-compose.yml pull 
-            docker-compose -f docker-compose.yml up -d --build  
-            docker system prune -f
+            docker-compose -f docker-compose.yml up -d --build
