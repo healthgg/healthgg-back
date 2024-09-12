@@ -5,13 +5,13 @@ FROM node:18-alpine As Development
 WORKDIR /app
 
 # Copy package.json and package-lock.json
-COPY package*.json ./
+COPY package.json package-lock.json ./
 
 # Install dependencies
 RUN npm ci
 
 # Copy the rest of the application files
-COPY --chown=node:node . .
+COPY . .
 
 # Expose the necessary port (optional if needed)
 EXPOSE 3000
