@@ -26,7 +26,7 @@ services:
       - elk
     depends_on:
       - elasticsearch
-    # command: ['/bin/sh', '-c', '/entrypoint.sh'] # setup 서비스에 명령 추가
+    command: ['/bin/sh', '-c', '/entrypoint.sh'] # setup 서비스에 명령 추가
 
   heatlgg:
     hostname: healthgg-nestjs
