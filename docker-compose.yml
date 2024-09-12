@@ -39,7 +39,7 @@ services:
     networks:
       - elk
     restart: always
-    command: ['npm', 'run', 'start:dev'] # 실행 명령 추가
+    # command: ['npm', 'run', 'start:dev'] # 실행 명령 추가
 
   elasticsearch:
     container_name: elasticsearch
