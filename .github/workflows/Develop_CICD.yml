@@ -24,7 +24,7 @@ jobs:
           password: ${{ secrets.SSH_PASSWORD_DEV }}
           port: ${{ secrets.SSH_PORT_DEV }}
           source: './' # 현재 작업 디렉토리의 모든 파일을 복사
-          target: '/home/ubuntu/app' # 원격 서버의 타겟 디렉토리
+          target: '/home/ubuntu/healthgg-back' # 원격 서버의 타겟 디렉토리
 
       - name: Deploy ELK Stack
         uses: appleboy/ssh-action@master
@@ -34,7 +34,7 @@ jobs:
           password: ${{ secrets.SSH_PASSWORD_DEV }} # SSH 개인 키
           port: ${{ secrets.SSH_PORT_DEV }} # SSH 포트 (기본값: 22)
           script: |
-            cd /home/ubuntu/app  
+            cd /home/ubuntu/healthgg-back 
             docker-compose down      
             docker-compose pull      
             docker-compose up -d
