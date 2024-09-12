@@ -1,5 +1,5 @@
 # Use node:18-alpine as base image
-FROM node:18-alpine As Development
+FROM node:18
 
 # Set working directory
 WORKDIR /app

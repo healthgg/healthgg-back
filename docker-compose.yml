@@ -4,8 +4,9 @@ services:
   healthgg:
     container_name: healthgg-nestjs
     build:
-      context: .
-      dockerfile: Dockerfile
+      .
+      # context: .
+      # dockerfile: Dockerfile
     ports:
       - '3000:3000'
     environment:
@@ -13,7 +14,7 @@ services:
     networks:
       - elk
     restart: always
-    # command: ['npm', 'run', 'start:dev'] # 실행 명령 추가
+    command: ['npm', 'run', 'start:dev'] # 실행 명령 추가
 
   elasticsearch:
     container_name: elasticsearch
