@@ -12,9 +12,15 @@ jobs:
       - name: Check out the repository
         uses: actions/checkout@v3
 
-      - name: Set ENV
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_PASSWORD }}
+      - name: Build and push Docker images
         run: |
-          echo "${{ secrets.DOT_ENV_DEV }}" >> .env
+          docker-compose -f docker-compose.yml build
+          docker-compose -f docker-compose.yml push
 
       - name: Deploy ELK Stack
         uses: appleboy/ssh-action@master
@@ -27,6 +33,6 @@ jobs:
             cd /home/ubuntu/healthgg-back 
             echo "${{ secrets.DOT_ENV_DEV }}" >> .env
             git pull origin develop
-            docker-compose down               
-            docker-compose up -d --build
-            ehco docker-compose config
+            docker-compose -f docker-compose.yml pull 
+            docker-compose -f docker-compose.yml up -d --build  
+            docker system prune -f
