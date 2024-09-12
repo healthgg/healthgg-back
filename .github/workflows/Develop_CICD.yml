@@ -16,15 +16,15 @@ jobs:
         run: |
           echo "ELASTIC_VERSION=${{ secrets.DOT_ENV_DEV }}" >> .env
 
-      - name: Copy files to remote server
-        uses: appleboy/scp-action@master
-        with:
-          host: ${{ secrets.SSH_HOST_DEV }}
-          username: ${{ secrets.SSH_USERNAME_DEV }}
-          password: ${{ secrets.SSH_PASSWORD_DEV }}
-          port: ${{ secrets.SSH_PORT_DEV }}
-          source: './' # 현재 작업 디렉토리의 모든 파일을 복사
-          target: '/home/ubuntu/healthgg-back' # 원격 서버의 타겟 디렉토리
+      # - name: Copy files to remote server
+      #   uses: appleboy/scp-action@master
+      #   with:
+      #     host: ${{ secrets.SSH_HOST_DEV }}
+      #     username: ${{ secrets.SSH_USERNAME_DEV }}
+      #     password: ${{ secrets.SSH_PASSWORD_DEV }}
+      #     port: ${{ secrets.SSH_PORT_DEV }}
+      #     source: './' # 현재 작업 디렉토리의 모든 파일을 복사
+      #     target: '/home/ubuntu/healthgg-back' # 원격 서버의 타겟 디렉토리
 
       - name: Deploy ELK Stack
         uses: appleboy/ssh-action@master
