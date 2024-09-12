@@ -14,7 +14,7 @@ jobs:
 
       - name: Set ENV
         run: |
-          echo "ELASTIC_VERSION=${{ secrets.DOT_ENV_DEV }}" >> .env
+          echo "${{ secrets.DOT_ENV_DEV }}" >> .env
 
       - name: Deploy ELK Stack
         uses: appleboy/ssh-action@master
@@ -25,6 +25,7 @@ jobs:
           port: ${{ secrets.SSH_PORT_DEV }} # SSH 포트 (기본값: 22)
           script: |
             cd /home/ubuntu/healthgg-back 
+            echo "${{ secrets.DOT_ENV_DEV }}" >> .env
             git pull origin develop
             docker-compose down               
             docker-compose up -d --build
