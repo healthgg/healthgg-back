@@ -28,7 +28,7 @@ services:
       - elasticsearch
     command: ['/bin/sh', '-c', '/entrypoint.sh'] # setup 서비스에 명령 추가
 
-  heatlgg:
+  healthgg:
     hostname: healthgg-nestjs
     build:
       context: .
