@@ -27,10 +27,10 @@ jobs:
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_PASSWORD }}
-      - name: Build and push Docker images
-        run: |
-          docker-compose -f docker-compose.yml build
-          docker-compose -f docker-compose.yml push
+      # - name: Build and push Docker images
+      #   run: |
+      #     docker-compose -f docker-compose.yml build
+      #     docker-compose -f docker-compose.yml push
 
       - name: Deploy ELK Stack
         uses: appleboy/ssh-action@master
@@ -44,6 +44,4 @@ jobs:
             echo "${{ secrets.DOT_ENV_DEV }}" >> .env
             git checkout develop
             git pull origin develop
-            docker-compose -f docker-compose.yml down   
-            docker-compose -f docker-compose.yml pull 
-            docker-compose -f docker-compose.yml up -d --build
+            docker-compose.yml up -d --build
