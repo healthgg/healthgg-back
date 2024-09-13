@@ -1,22 +1,15 @@
-# Use node:18-alpine as base image
-FROM node:18-alpine
-
-# Set working directory
-RUN mkdir -p /var/app 
-
-# WORKDIR: 코드 실행 경로(작업 경로)
-WORKDIR /var/app
-
-# Copy package.json and package-lock.json
-# COPY package.json package-lock.json ./
-
-# Install dependencies
-# Copy the rest of the application files
+# 단계 1: 빌드 단계
+FROM node:18-alpine AS builder
+WORKDIR /app
+COPY package*.json ./
+RUN npm install
 COPY . .
-RUN npm ci
+RUN npm run build
 
-# Expose the necessary port (optional if needed)
+# 단계 2: 실행 단계
+FROM node:18-alpine
+WORKDIR /app
+COPY --from=builder /app/dist ./dist
+COPY --from=builder /app/node_modules ./node_modules
 EXPOSE 3000
-
-# Start the application
 CMD ["npm", "run", "start:dev"]
