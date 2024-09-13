@@ -44,4 +44,4 @@ jobs:
             echo "${{ secrets.DOT_ENV_DEV }}" >> .env
             git checkout develop
             git pull origin develop
-            docker-compose.yml up -d --build
+            docker-compose up -d --build
