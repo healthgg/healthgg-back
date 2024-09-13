@@ -42,6 +42,7 @@ jobs:
           script: |
             cd /home/ubuntu/healthgg-back 
             echo "${{ secrets.DOT_ENV_DEV }}" >> .env
+            git checkout develop
             git pull origin develop
             docker-compose -f docker-compose.yml pull 
             docker-compose -f docker-compose.yml up -d --build
