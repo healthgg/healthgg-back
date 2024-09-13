@@ -4,8 +4,7 @@ services:
   healthgg:
     container_name: healthgg-nestjs
     build:
-      context: . # 현재 디렉토리에서 빌드
-      dockerfile: Dockerfile # 사용할 Dockerfile 경로
+      context: .
     ports:
       - '3000:3000'
     environment:
@@ -13,31 +12,32 @@ services:
     networks:
       - elk
     restart: always
-    command: ['npm', 'run', 'start:dev'] # 명령어 추가
+    command: ['npm', 'run', 'start:dev']
 
   elasticsearch:
     container_name: elasticsearch
-    image: docker.elastic.co/elasticsearch/elasticsearch:8.15.0 # 이미지 직접 사용
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.15.0
+    build:
+      context: ./elasticsearch
     volumes:
       - elasticsearch:/usr/share/elasticsearch/data
     ports:
       - 9200:9200
       - 9300:9300
     environment:
-      - node.name=elasticsearch
-      - ES_JAVA_OPTS=-Xms512m -Xmx512m
-      - ELASTIC_PASSWORD=${ELASTIC_PASSWORD}
-      - discovery.type=single-node
+      node.name: elasticsearch
+      ES_JAVA_OPTS: -Xms512m -Xmx512m
+      ELASTIC_PASSWORD: ${ELASTIC_PASSWORD}
+      discovery.type: single-node
     networks:
       - elk
     restart: unless-stopped
-    command: ['elasticsearch'] # 실행 명령어 추가
 
   logstash:
     container_name: logstash
+    image: docker.elastic.co/logstash/logstash:8.15.0
     build:
-      context: ./logstash # logstash의 Dockerfile 경로 수정
-      dockerfile: Dockerfile
+      context: ./logstash
     volumes:
       - ./logstash/pipeline:/usr/share/logstash/pipeline
       - ./logstash/config/logstash.yml:/usr/share/logstash/config/logstash.yml
@@ -45,7 +45,7 @@ services:
       - 5000:5000
       - 9600:9600
     environment:
-      - LS_JAVA_OPTS=-Xms256m -Xmx256m
+      LS_JAVA_OPTS: -Xms256m -Xmx256m
     networks:
       - elk
     depends_on:
@@ -54,7 +54,9 @@ services:
 
   kibana:
     container_name: kibana
-    image: docker.elastic.co/kibana/kibana:8.15.0 # 이미지 직접 사용
+    image: docker.elastic.co/kibana/kibana:8.15.0
+    build:
+      context: ./kibana
     volumes:
       - ./kibana/config/kibana.yml:/usr/share/kibana/config/kibana.yml
     ports:
