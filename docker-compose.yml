@@ -5,7 +5,7 @@ services:
     container_name: healthgg-nestjs
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: dockerfile
     ports:
       - '3000:3000'
     environment:
@@ -13,11 +13,9 @@ services:
     networks:
       - elk
     restart: always
-    command: ['npm', 'run', 'start:dev']
 
   elasticsearch:
     container_name: elasticsearch
-    # image: docker.elastic.co/elasticsearch/elasticsearch:8.15.0
     build:
       context: ./elasticsearch
     volumes:
@@ -36,7 +34,6 @@ services:
 
   logstash:
     container_name: logstash
-    # image: docker.elastic.co/logstash/logstash:8.15.0
     build:
       context: ./logstash
     volumes:
@@ -55,7 +52,6 @@ services:
 
   kibana:
     container_name: kibana
-    # image: docker.elastic.co/kibana/kibana:8.15.0
     build:
       context: ./kibana
     volumes:
