@@ -1,5 +1,5 @@
 # 단계 1: 빌드 단계
-FROM node:18-alpine AS builder
+FROM node:20.9.0-alpine AS builder
 WORKDIR /app
 COPY package*.json ./
 RUN npm install
@@ -7,7 +7,7 @@ COPY . .
 RUN npm run build
 
 # 단계 2: 실행 단계
-FROM node:18-alpine
+FROM node:20.9.0-alpine
 WORKDIR /app
 COPY --from=builder /app/dist ./dist
 COPY --from=builder /app/node_modules ./node_modules
