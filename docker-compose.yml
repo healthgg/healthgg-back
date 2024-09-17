@@ -16,7 +16,7 @@ services:
       ELASTIC_PASSWORD: ${ELASTIC_PASSWORD}
       discovery.type: single-node
     networks:
-      - elk
+      - healthgg_network
     restart: unless-stopped
 
   logstash:
@@ -32,7 +32,7 @@ services:
     environment:
       LS_JAVA_OPTS: -Xms256m -Xmx256m
     networks:
-      - elk
+      - healthgg_network
     depends_on:
       - elasticsearch
     restart: unless-stopped
@@ -48,7 +48,7 @@ services:
     environment:
       - KIBANA_SYSTEM_PASSWORD=${KIBANA_SYSTEM_PASSWORD}
     networks:
-      - elk
+      - healthgg_network
     depends_on:
       - elasticsearch
     restart: unless-stopped
