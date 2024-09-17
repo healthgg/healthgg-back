@@ -54,7 +54,7 @@ services:
     restart: unless-stopped
 
 networks:
-  elk:
+  healthgg_network:
     driver: bridge
 
 volumes:
