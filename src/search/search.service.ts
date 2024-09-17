@@ -82,7 +82,7 @@ export class SearchService {
     console.log(keyword);
     try {
       const result = await this.esService.search({
-        index: 'indexfood',
+        index: 'indexfitness',
         body: {
           query: {
             bool: {
