@@ -36,7 +36,7 @@ import { ScheduleModule } from '@nestjs/schedule';
       synchronize: true,
       //synchronize: true,
       logging: true,
-      charset: 'utf8',
+      //charset: 'utf8',
       // collation: 'utf8mb4_unicode_ci',
     }),
     FitnessMachineModule,
