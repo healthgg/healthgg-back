@@ -1,6 +1,7 @@
 import { BodyPartModel } from 'src/body_part/entity/body_part.entity';
 import {
   Column,
+  CreateDateColumn,
   Entity,
   JoinColumn,
   ManyToOne,
@@ -33,4 +34,7 @@ export class FitnessMachineModel implements IFitnessMachine {
 
   @Column({ type: 'varchar', length: '255', comment: '헬스 기구 설명' })
   finess_machine_notice: string;
+
+  @CreateDateColumn({ type: 'timestamp' })
+  created_at: Date;
 }
