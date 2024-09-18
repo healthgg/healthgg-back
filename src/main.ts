@@ -37,7 +37,7 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
   const configService = app.get(ConfigService);
-  await app.listen(3000, () => {
+  await app.listen(3002, () => {
     console.log(configService.get('NODE_ENV'));
   });
 }
