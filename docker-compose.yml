@@ -1,22 +1,8 @@
 version: '3.7'
 
 services:
-  healthgg:
-    container_name: healthgg-nestjs
-    build:
-      context: .
-    ports:
-      - '3000:3000'
-    environment:
-      - NODE_ENV=development
-    networks:
-      - elk
-    restart: always
-    command: ['npm', 'run', 'start:dev']
-
   elasticsearch:
     container_name: elasticsearch
-    image: docker.elastic.co/elasticsearch/elasticsearch:8.15.0
     build:
       context: ./elasticsearch
     volumes:
@@ -30,12 +16,11 @@ services:
       ELASTIC_PASSWORD: ${ELASTIC_PASSWORD}
       discovery.type: single-node
     networks:
-      - elk
+      - healthgg_network
     restart: unless-stopped
 
   logstash:
     container_name: logstash
-    image: docker.elastic.co/logstash/logstash:8.15.0
     build:
       context: ./logstash
     volumes:
@@ -47,14 +32,13 @@ services:
     environment:
       LS_JAVA_OPTS: -Xms256m -Xmx256m
     networks:
-      - elk
+      - healthgg_network
     depends_on:
       - elasticsearch
     restart: unless-stopped
 
   kibana:
     container_name: kibana
-    image: docker.elastic.co/kibana/kibana:8.15.0
     build:
       context: ./kibana
     volumes:
@@ -64,14 +48,15 @@ services:
     environment:
       - KIBANA_SYSTEM_PASSWORD=${KIBANA_SYSTEM_PASSWORD}
     networks:
-      - elk
+      - healthgg_network
     depends_on:
       - elasticsearch
     restart: unless-stopped
 
 networks:
-  elk:
+  healthgg_network:
     driver: bridge
+    external: true
 
 volumes:
   elasticsearch:
