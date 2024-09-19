@@ -31,6 +31,9 @@ services:
       - 9600:9600
     environment:
       LS_JAVA_OPTS: -Xms256m -Xmx256m
+      ES_HOST: ${ES_HOST}
+      ES_USERNAME: ${ES_USERNAME}
+      ES_PASSWORD: ${ES_PASSWORD}
     networks:
       - healthgg_network
     depends_on:
