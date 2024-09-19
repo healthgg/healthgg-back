@@ -28,7 +28,7 @@ RUN npm install --production
 COPY --from=builder /app/dist ./dist
 
 # Copy .env.production and rename it to .env
-COPY .env.production .env
+COPY .env .env
 
 # Start the application using the production build
 ENTRYPOINT ["npm", "run", "start:prod"]
