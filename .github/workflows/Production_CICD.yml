@@ -17,9 +17,6 @@ jobs:
         with:
           node-version: '20.9' # Update this with your desired Node.js version
 
-      - name: SET ENV
-        run: echo "${{ secrets.DOT_ENV_PRO }}" >> .env
-
       - name: Build Docker image
         run: |
           docker build -t ${{secrets.DOCKERHUB_USERNAME}}/healthggproduction:latest  -f dockerfile.production .
