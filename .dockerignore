@@ -4,3 +4,5 @@ Dockerfile.production
 node_modules
 npm-debug.log
 dist
+.git
+.gitignore
