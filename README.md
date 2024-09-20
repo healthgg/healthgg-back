@@ -28,6 +28,20 @@
 | <img src="https://avatars.githubusercontent.com/u/84097192?v=4" width="200" />  | 김한솔 | 프론트엔드 | [GitHub](https://github.com/hansololiviakim)  |
 
 
+# 팀원 정보
+
+| <img src="https://avatars.githubusercontent.com/u/96641210?v=4" width="100" /> | <img src="https://avatars.githubusercontent.com/u/84097192?v=4" width="100" /> | 
+|----------------------|--------------------------|
+| **김용식**            | **김한솔**                | 
+| 백엔드         | 프론트엔드         | 
+| [GitHub](https://github.com/ystar5008) | [GitHub](https://github.com/hansololiviakim) | 
+
+
+
+
+
+
+
 </div>
 
 <br>
