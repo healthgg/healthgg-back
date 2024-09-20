@@ -1,28 +1,33 @@
-# 📖 책 취향 공유 서비스앱 README
+# 💪운동 관련 정보 공유 서비스 HealthGG
 
 ![readme_mockup2](https://user-images.githubusercontent.com/112460466/210706312-6a44b60d-a42e-4210-b334-9e5983f70fb3.png)
 
-- 배포 주소 : https://ohmycode-readme.netlify.app
+- 배포 주소 : https://www.healthgg.store
 - 노션 주소 : https://healthgg.notion.site/HealthGG-2eb7cf34ed20467284b0bfff03de0a0b
 - 피그마 주소 : https://www.figma.com/design/3ZZ5wdaVFHllOgWbtwzlef/healthgg?node-id=487-2186&t=A7EQGfK9GqmtgIaf-1
 
 
 <br>
 
-## 프로젝트 소개
+## 👨프로젝트 소개 
 
-- :muscle: HealthGG는 운동 관련 계산 및 정보를 공유하는 서비스 입니다.
+- HealthGG는 운동 관련 계산 및 정보를 공유하는 서비스 입니다.
 - 1RM 계산기 : 실제로 1RM을 수행하지 않고 수행 횟수 및 수행 중량을 근거로 1RM을 계산합니다
 - 커스텀 식단 : 목적에 맞는 자신만의 식단을 만들고 공유하거나 엑셀파일로 다운 받을 수 있습니다.
 - 커스텀 운동 루틴 : 유저가 수행하고 있는 운동 루틴 및 프로그램을 만들고 공유할 수 있습니다.
 
 <br>
 
-## 팀원 구성
+## 👨‍💻팀원 소개
 
 <div align="center">
-김한솔
-김용식
+# 팀원 정보
+
+| 사진  | 이름   | 역할         | GitHub 링크                       |
+|-------|--------|--------------|-----------------------------------|
+| <img src="https://avatars.githubusercontent.com/u/96641210?v=4" width="50" /> | 김용식 | 백엔드 | [GitHub](https://github.com/ystar5008) |
+| <img src="https://avatars.githubusercontent.com/u/84097192?v=4" width="50" />  | 김한솔 | 프론트엔드 | [GitHub](https://github.com/hansololiviakim)  |
+
 
 </div>
 
