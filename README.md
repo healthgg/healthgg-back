@@ -48,17 +48,15 @@
 
 ## 🛠️개발 환경
 
-# 사용한 기술
-
-- **프론트엔드**: 
+- **프론트엔드**<br> 
   ![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB) 
-- **백엔드**: 
+- **백엔드**<br> 
   ![NestJS](https://img.shields.io/badge/NestJS-E0234E?style=for-the-badge&logo=nestjs&logoColor=white) ![ELK](https://img.shields.io/badge/ELK-00B2A9?style=for-the-badge&logo=elasticsearch&logoColor=white)
-- **데이터베이스**: 
+- **데이터베이스**<br> 
   ![MySQL](https://img.shields.io/badge/MySQL-4479A1?style=for-the-badge&logo=mysql&logoColor=white)
-- **DevOps**: 
+- **DevOps**<br>
   ![Docker](https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white) ![Nginx](https://img.shields.io/badge/Nginx-009639?style=for-the-badge&logo=nginx&logoColor=white) ![GitHub Actions](https://img.shields.io/badge/GitHub_Actions-2088FF?style=for-the-badge&logo=github-actions&logoColor=white) ![VMware](https://img.shields.io/badge/VMware-5B3FD8?style=for-the-badge&logo=vmware&logoColor=white)
-- **기타 도구**: 
+- **기타 도구**<br> 
   ![Git](https://img.shields.io/badge/Git-F05032?style=for-the-badge&logo=git&logoColor=white) ![Postman](https://img.shields.io/badge/Postman-FA2B1D?style=for-the-badge&logo=postman&logoColor=white) ![Discord](https://img.shields.io/badge/Discord-7289DA?style=for-the-badge&logo=discord&logoColor=white) ![Figma](https://img.shields.io/badge/Figma-F24E1E?style=for-the-badge&logo=figma&logoColor=white)
 
 <br>
