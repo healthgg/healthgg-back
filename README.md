@@ -21,12 +21,11 @@
 ## 👨‍💻팀원 소개
 
 <div align="center">
-# 팀원 정보
 
 | 사진  | 이름   | 역할         | GitHub 링크                       |
 |-------|--------|--------------|-----------------------------------|
-| <img src="https://avatars.githubusercontent.com/u/96641210?v=4" width="50" /> | 김용식 | 백엔드 | [GitHub](https://github.com/ystar5008) |
-| <img src="https://avatars.githubusercontent.com/u/84097192?v=4" width="50" />  | 김한솔 | 프론트엔드 | [GitHub](https://github.com/hansololiviakim)  |
+| <img src="https://avatars.githubusercontent.com/u/96641210?v=4" width="200" /> | 김용식 | 백엔드 | [GitHub](https://github.com/ystar5008) |
+| <img src="https://avatars.githubusercontent.com/u/84097192?v=4" width="200" />  | 김한솔 | 프론트엔드 | [GitHub](https://github.com/hansololiviakim)  |
 
 
 </div>
