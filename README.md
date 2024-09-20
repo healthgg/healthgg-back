@@ -22,25 +22,32 @@
 
 <div align="center">
 
-| 사진  | 이름   | 역할         | GitHub 링크                       |
-|-------|--------|--------------|-----------------------------------|
-| <img src="https://avatars.githubusercontent.com/u/96641210?v=4" width="200" /> | 김용식 | 백엔드 | [GitHub](https://github.com/ystar5008) |
-| <img src="https://avatars.githubusercontent.com/u/84097192?v=4" width="200" />  | 김한솔 | 프론트엔드 | [GitHub](https://github.com/hansololiviakim)  |
 
-
-# 팀원 정보
-
-| <img src="https://avatars.githubusercontent.com/u/96641210?v=4" width="100" /> | <img src="https://avatars.githubusercontent.com/u/84097192?v=4" width="100" /> | 
+| <img src="https://avatars.githubusercontent.com/u/96641210?v=4" width="200" /> | <img src="https://avatars.githubusercontent.com/u/84097192?v=4" width="200" /> | 
 |----------------------|--------------------------|
 | **김용식**            | **김한솔**                | 
 | 백엔드         | 프론트엔드         | 
 | [GitHub](https://github.com/ystar5008) | [GitHub](https://github.com/hansololiviakim) | 
 
 
-
-
-
-
+<table>
+  <tr>
+    <td align="center"><img src="https://avatars.githubusercontent.com/u/96641210?v=4" width="200" /></td>
+    <td align="center"><img src="https://avatars.githubusercontent.com/u/84097192?v=4" width="200" /></td>
+  </tr>
+  <tr>
+    <td align="center"><strong>김용식</strong></td>
+    <td align="center"><strong>김한솔</strong></td>
+  </tr>
+  <tr>
+    <td align="center">백엔드</td>
+    <td align="center">프론트엔드</td>
+  </tr>
+  <tr>
+    <td align="center"><a href="https://github.com/ystar5008">GitHub</a></td>
+    <td align="center"><a href="https://github.com/hansololiviakim">GitHub</a></td>
+  </tr>
+</table>
 
 </div>
 
