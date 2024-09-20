@@ -22,14 +22,6 @@
 
 <div align="center">
 
-
-| <img src="https://avatars.githubusercontent.com/u/96641210?v=4" width="200" /> | <img src="https://avatars.githubusercontent.com/u/84097192?v=4" width="200" /> | 
-|----------------------|--------------------------|
-| **김용식**            | **김한솔**                | 
-| 백엔드         | 프론트엔드         | 
-| [GitHub](https://github.com/ystar5008) | [GitHub](https://github.com/hansololiviakim) | 
-
-
 <table>
   <tr>
     <td align="center"><img src="https://avatars.githubusercontent.com/u/96641210?v=4" width="200" /></td>
@@ -53,20 +45,29 @@
 
 <br>
 
-## 1. 개발 환경
+## 🛠️개발 환경
 
-### Front-End
-
--  React
-
-### BAck-End
-
-- Nest.js
-
+- **프론트엔드**: 
+  - ![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB) React
+- **백엔드**: 
+  - ![NestJS](https://img.shields.io/badge/NestJS-E0234E?style=for-the-badge&logo=nestjs&logoColor=white) NestJS
+  - ![ELK](https://img.shields.io/badge/ELK-00B2A9?style=for-the-badge&logo=elasticsearch&logoColor=white) ELK
+- **데이터베이스**: 
+  - ![MySQL](https://img.shields.io/badge/MySQL-4479A1?style=for-the-badge&logo=mysql&logoColor=white) MySQL
+- **DevOps**: 
+  - ![Docker](https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white) Docker
+  - ![Nginx](https://img.shields.io/badge/Nginx-009639?style=for-the-badge&logo=nginx&logoColor=white) Nginx
+  - ![GitHub Actions](https://img.shields.io/badge/GitHub_Actions-2088FF?style=for-the-badge&logo=github-actions&logoColor=white) GitHub Actions
+  - ![VMware](https://img.shields.io/badge/VMware-5B3FD8?style=for-the-badge&logo=vmware&logoColor=white) VMware
+- **기타 도구**: 
+  - ![Git](https://img.shields.io/badge/Git-F05032?style=for-the-badge&logo=git&logoColor=white) Git
+  - ![Postman](https://img.shields.io/badge/Postman-FA2B1D?style=for-the-badge&logo=postman&logoColor=white) Postman
+  - ![Discord](https://img.shields.io/badge/Discord-7289DA?style=for-the-badge&logo=discord&logoColor=white) Discord
+  - ![Figma](https://img.shields.io/badge/Figma-F24E1E?style=for-the-badge&logo=figma&logoColor=white) Figma
 
 <br>
 
-## 2. 채택한 개발 기술과 브랜치 전략
+## 채택한 개발 기술과 브랜치 전략
 
 ### React, styled-component
 
