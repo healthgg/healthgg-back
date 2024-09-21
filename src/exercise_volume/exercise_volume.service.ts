@@ -25,6 +25,7 @@ export class ExerciseVolumeService {
   ) {}
 
   public async getExerciseVolmes(): Promise<ExerciseVolumeBoardModel[]> {
+    console.log(1);
     const exerciseVolumeList = await this.exerciseVolumeBoardRepository.find({
       order: {
         viewCount: 'DESC',
@@ -32,6 +33,7 @@ export class ExerciseVolumeService {
       take: 4,
     });
 
+    console.log(exerciseVolumeList);
     if (exerciseVolumeList.length === 0 || !exerciseVolumeList) {
       {
         throw new BadRequestException('운동 볼륨 게시글이 없습니다.');

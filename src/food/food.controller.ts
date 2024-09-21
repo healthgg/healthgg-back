@@ -15,10 +15,16 @@ import { CreateFoodDto } from './dto/create_food.dto';
 import { SearchService } from 'src/search/search.service';
 import { Response } from 'express';
 import { foodExcelDto } from './dto/create_food_excel.dto';
+import { foodModel } from './entity/food.entity';
 
 @Controller('food')
 export class FoodController {
   constructor(private readonly foodService: FoodService) {}
+
+  @Get('best')
+  public async getBestFoodList() {
+    return await this.foodService.getFoodBoardList();
+  }
 
   @Get(':type')
   public async getFoodList(
