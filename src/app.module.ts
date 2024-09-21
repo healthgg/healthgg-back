@@ -18,10 +18,6 @@ import { ScheduleModule } from '@nestjs/schedule';
     CacheModule.register({ isGlobal: true }),
     ConfigModule.forRoot({
       isGlobal: true,
-      //   envFilePath:
-      //     process.env.NODE_ENV === 'production'
-      //       ? '.env.production'
-      //       : '.env.development',
     }),
     TypeOrmModule.forRoot({
       type: 'mysql',
@@ -32,12 +28,8 @@ import { ScheduleModule } from '@nestjs/schedule';
       database: process.env.DATABASE_NAME,
       entities: [__dirname + '/**/*.entity.*'],
       autoLoadEntities: true,
-      //synchronize: process.env.NODE_ENV === 'production' ? false : true,
-      synchronize: true,
-      //synchronize: true,
+      synchronize: process.env.NODE_ENV === 'production' ? false : true,
       logging: true,
-      //charset: 'utf8',
-      // collation: 'utf8mb4_unicode_ci',
     }),
     FitnessMachineModule,
     BodyPartModule,
@@ -46,21 +38,6 @@ import { ScheduleModule } from '@nestjs/schedule';
     ExerciseVolumeModule,
     MainModule,
     SearchModule,
-    // RedisModule.forRoot({
-    //   readyLog: true,
-    //   config: {
-    //     host: 'my-redis',
-    //     port: 6379,
-    //     //   password: 'bitnami'
-    //   },
-    //}),
-    // TypeOrmModule.forFeature([
-    //   FitnessMachineModel,
-    //   foodModel,
-    //   nutrientModel,
-    //   ExerciseVolumeModel,
-    //   BodyPartModel,
-    // ]),
   ],
   controllers: [],
   providers: [EventsGateway],
