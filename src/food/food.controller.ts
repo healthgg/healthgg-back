@@ -13,7 +13,7 @@ import { FoodService } from './food.service';
 import { CursorPageOptionsDto } from './cursor-page/cursor-page-option.dto';
 import { CreateFoodDto } from './dto/create_food.dto';
 import { SearchService } from 'src/search/search.service';
-import { Response } from 'express';
+import { Response, Request } from 'express';
 import { foodExcelDto } from './dto/create_food_excel.dto';
 import { foodModel } from './entity/food.entity';
 
@@ -23,7 +23,7 @@ export class FoodController {
 
   @Get('best')
   public async getBestFoodList() {
-    return await this.foodService.getFoodBoardList();
+    return await this.foodService.getFoodBoardOrderbyViewCount();
   }
 
   @Get(':type')

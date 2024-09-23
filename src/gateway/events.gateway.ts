@@ -23,25 +23,22 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect {
   private rooms = new Map<string, string[]>(); // 방과 채팅 내역 저장
   private clientsCount: string[] = [];
 
-  handleConnection(client: any, ...args: any[]): number {
+  handleConnection(client: any, ...args: any[]) {
     this.clientsCount.push(client.id);
-    this.server.emit('clientsCount', this.clientsCount);
+    this.server.emit('clientsCount', this.clientsCount.length);
     console.log(`Client connected: ${client.id}`);
-    console.log(this.clientsCount);
     console.log(this.clientsCount.length);
-    return this.clientsCount.length;
   }
 
-  handleDisconnect(client: any): number | [] {
+  handleDisconnect(client: any) {
     const index = this.clientsCount.findIndex((item) => item === client.id);
-    console.log(index);
-    if (index) delete this.clientsCount === client.id;
-    this.server.emit('clientsCount', this.clientsCount);
-    //console.log(client);
+
+    if (index !== -1) {
+      this.clientsCount.splice(index, 1); // Remove client from the list
+    }
+    this.server.emit('clientsCount', this.clientsCount.length);
     console.log(`Client disconnected: ${client.id}`);
     console.log(this.clientsCount.length);
-    console.log(this.clientsCount?.length);
-    return this.clientsCount?.length ? this.clientsCount.length : [];
   }
 
   @SubscribeMessage('login_client')
