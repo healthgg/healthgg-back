@@ -33,30 +33,53 @@ export class ExerciseVolumeService {
       take: 4,
     });
 
-    console.log(exerciseVolumeList);
     if (exerciseVolumeList.length === 0 || !exerciseVolumeList) {
       {
         throw new BadRequestException('운동 볼륨 게시글이 없습니다.');
       }
     }
 
-    exerciseVolumeList.map(async (data) => {
-      data.description = JSON.parse(data.description);
+    //.map(async() 사용했는데 비동기 작업을 병렬적으로 처리하기 떄문에 await이 작동하지 않았음
+    for (const data of exerciseVolumeList) {
+      data.description = JSON.parse(data?.description);
       const descriptionArr = data.description;
       const fitnessMachineUrlList = [];
-      for (let i = 0; i < descriptionArr.length; i++) {
-        const fitnessMachineArr = await this.fitnessMachineRepository.findBy({
-          fitness_machine_id: descriptionArr[i]['fitness_machine_id'],
-        });
 
-        for (const fitnessMachine of fitnessMachineArr) {
-          fitnessMachineUrlList.push(fitnessMachine.finess_machine_imageurl);
-        }
-        console.log(fitnessMachineUrlList);
+      for (const url of descriptionArr) {
+        fitnessMachineUrlList.push(url['fitness_machine_imageurl']);
       }
       data.fitness_machine_urls = fitnessMachineUrlList;
+    }
+
+    return exerciseVolumeList;
+  }
+
+  public async getExerciseVolmesOrderbyViewConut(): Promise<
+    ExerciseVolumeBoardModel[]
+  > {
+    const exerciseVolumeList = await this.exerciseVolumeBoardRepository.find({
+      order: {
+        viewCount: 'DESC',
+      },
     });
 
+    if (exerciseVolumeList.length === 0 || !exerciseVolumeList) {
+      {
+        throw new BadRequestException('운동 볼륨 게시글이 없습니다.');
+      }
+    }
+
+    //.map(async() 사용했는데 비동기 작업을 병렬적으로 처리하기 떄문에 await이 작동하지 않았음
+    for (const data of exerciseVolumeList) {
+      data.description = JSON.parse(data?.description);
+      const descriptionArr = data.description;
+      const fitnessMachineUrlList = [];
+
+      for (const url of descriptionArr) {
+        fitnessMachineUrlList.push(url['fitness_machine_imageurl']);
+      }
+      data.fitness_machine_urls = fitnessMachineUrlList;
+    }
     return exerciseVolumeList;
   }
 

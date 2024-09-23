@@ -15,7 +15,7 @@ export class ExerciseVolumeController {
   @Get('best')
   public async getBestExerciseVolme(): Promise<ExerciseVolumeBoardModel[]> {
     const bestExerciseVolme: ExerciseVolumeBoardModel[] =
-      await this.exerciseVolumeService.getExerciseVolmes();
+      await this.exerciseVolumeService.getExerciseVolmesOrderbyViewConut();
 
     return bestExerciseVolme;
   }
