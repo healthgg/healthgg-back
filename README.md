@@ -1,6 +1,6 @@
 # 💪운동 관련 정보 공유 서비스 HealthGG
 
-![readme_mockup2](https://user-images.githubusercontent.com/112460466/210706312-6a44b60d-a42e-4210-b334-9e5983f70fb3.png)
+![깃허브 메인 임시](https://github.com/user-attachments/assets/102bad2a-395a-46dc-a65e-5f149aa08c68)
 
 - 배포 주소 : https://www.healthgg.store
 - 노션 주소 : https://healthgg.notion.site/HealthGG-2eb7cf34ed20467284b0bfff03de0a0b
