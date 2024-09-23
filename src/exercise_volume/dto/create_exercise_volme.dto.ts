@@ -10,6 +10,7 @@ import {
 } from 'class-validator';
 import { ExerciseVolumeModel } from '../entity/exercise_volume.entity';
 import { emptyValidationMessage } from 'src/common/validation-message/empty-validation.message';
+import { FitnessMachineModel } from 'src/fitness_machine/entity/fitness_machine.entity';
 
 export class PostExerciseVolmeDto extends ExerciseVolumeModel {
   @IsInt()
@@ -31,6 +32,9 @@ export class PostExerciseVolmeDto extends ExerciseVolumeModel {
   @IsInt()
   @IsNotEmpty()
   total_weight: number;
+
+  @IsString()
+  fitness_machine_imageurl: string;
 }
 
 export class CreateExerciseVolumeADto {

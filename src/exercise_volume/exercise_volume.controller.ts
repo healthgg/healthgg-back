@@ -5,12 +5,22 @@ import {
   PostExerciseVolmeDto,
 } from './dto/create_exercise_volme.dto';
 import { Response } from 'express';
+import { ExerciseVolumeBoardModel } from './entity/exercise_volume_board.entity';
 
 @Controller('exercise_volume')
 export class ExerciseVolumeController {
   constructor(private readonly exerciseVolumeService: ExerciseVolumeService) {}
 
-  @Get(':post_id')
+  //고정된 경로를 먼저 선언
+  @Get('best')
+  public async getBestExerciseVolme(): Promise<ExerciseVolumeBoardModel[]> {
+    const bestExerciseVolme: ExerciseVolumeBoardModel[] =
+      await this.exerciseVolumeService.getExerciseVolmesOrderbyViewConut();
+
+    return bestExerciseVolme;
+  }
+
+  @Get('board/:post_id')
   public async getExerciseVolmesDetail(@Param('post_id') post_id: string) {
     return await this.exerciseVolumeService.getExerciseVolmesId(post_id);
   }

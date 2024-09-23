@@ -10,7 +10,7 @@ export class BoardBaseModel {
   @Column({ type: 'varchar', length: 50 })
   sub_title: string;
 
-  @Column({ type: 'varchar', length: 1000 })
+  @Column({ type: 'varchar', length: 10000 })
   description: string;
 
   @Column({ type: 'int', default: 0 })

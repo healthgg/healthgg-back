@@ -141,15 +141,15 @@ export class FoodService {
     const description = (foodDetail[0].description = JSON.parse(
       foodDetail[0].description,
     ));
-    const meals = Object.keys(description).slice(2);
-
+    const meals = Object.keys(description);
     for (const meal of meals) {
       let index = 0;
       const mealDataArr = description[meal];
-      for (let i = 0; i < mealDataArr.length; i++) {
+      for (let i = 0; i < description[meal].length; i++) {
         const nutrient = await this.nutrientRepository.findOne({
           where: { nutrient_id: mealDataArr[i].nutrient_id },
         });
+
         foodDetail[0].description[meal][index].nutrient = nutrient;
         index++;
       }
@@ -196,6 +196,35 @@ export class FoodService {
         viewCount: 'DESC',
       },
       take: 4,
+    });
+
+    if (foodBoardList.length === 0 || !foodBoardList) {
+      throw new BadRequestException('게시글이 없습니다.');
+    }
+    foodBoardList.map((data) => {
+      data.description = JSON.parse(data.description);
+    });
+
+    for (const food of foodBoardList) {
+      const foodImageArr = [];
+      for (const meal of meals) {
+        for (let i = 0; i < food.description[meal].length; i++) {
+          const foodImage = food.description[meal][i].food_imageurl;
+          foodImageArr.push(foodImage);
+        }
+      }
+      food.food_imageurl = foodImageArr;
+    }
+
+    return foodBoardList;
+  }
+
+  public async getFoodBoardOrderbyViewCount(): Promise<FoodBoardModel[]> {
+    const meals = ['Breakfast', 'Lunch', 'Dinner'];
+    const foodBoardList = await this.foodboardRepository.find({
+      order: {
+        viewCount: 'DESC',
+      },
     });
 
     if (foodBoardList.length === 0 || !foodBoardList) {
