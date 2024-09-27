@@ -36,7 +36,6 @@ export class LoggingInterceptor implements NestInterceptor {
 
         const logMessage = `요청날짜: ${now} 요청시간: ${formattedRequestTime} 요청 메서드: ${method} 요청엔드포인트: ${originalUrl} 응답코드: ${statusCode} ${userAgent} ip주소: ${ip} ${Date.now() - currnetTime}ms `;
 
-        //const logFolder = path.join('C:/Users/user/Desktop/healthgg', 'log');
         const logFolder = path.join(__dirname, '../../', 'logs'); // 상위 디렉토리로 이동
 
         if (!fs.existsSync(logFolder)) {
