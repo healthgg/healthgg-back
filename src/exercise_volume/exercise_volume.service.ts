@@ -25,7 +25,6 @@ export class ExerciseVolumeService {
   ) {}
 
   public async getExerciseVolmes(): Promise<ExerciseVolumeBoardModel[]> {
-    console.log(1);
     const exerciseVolumeList = await this.exerciseVolumeBoardRepository.find({
       order: {
         viewCount: 'DESC',
