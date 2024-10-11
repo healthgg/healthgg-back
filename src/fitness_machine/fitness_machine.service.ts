@@ -41,9 +41,9 @@ export class FitnessMachineService {
       .leftJoinAndSelect('fitness_machine.body_part', 'body_part')
       .select([
         'fitness_machine.fitness_machine_id',
-        'fitness_machine.finess_machine_imageurl',
-        'fitness_machine.finess_machine_name',
-        'fitness_machine.finess_machine_notice',
+        'fitness_machine.fitness_machine_imageurl',
+        'fitness_machine.fitness_machine_name',
+        'fitness_machine.fitness_machine_notice',
         'body_part.body_part_id',
         'body_part.body_part_type',
       ])
@@ -71,6 +71,8 @@ export class FitnessMachineService {
     const isLastScroll = total <= takePerScroll;
     const lastDataPerScroll = machines[machines.length - 1];
     const allFitnessMachine = await this.getAllFitnessMachines();
+
+    console.log(allFitnessMachine);
 
     if (isLastScroll) {
       hasNextData = false;
