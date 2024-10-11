@@ -27,13 +27,13 @@ export class FitnessMachineModel implements IFitnessMachine {
   exercise_volume: ExerciseVolumeModel[];
 
   @Column({ type: 'varchar', length: '255', comment: '헬스 기구 이미지 url' })
-  finess_machine_imageurl: string;
+  fitness_machine_imageurl: string;
 
   @Column({ type: 'varchar', length: '255', comment: '헬스 기구 이름' })
-  finess_machine_name: string;
+  fitness_machine_name: string;
 
   @Column({ type: 'varchar', length: '255', comment: '헬스 기구 설명' })
-  finess_machine_notice: string;
+  fitness_machine_notice: string;
 
   @CreateDateColumn({ type: 'timestamp' })
   created_at: Date;

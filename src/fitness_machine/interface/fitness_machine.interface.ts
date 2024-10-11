@@ -5,9 +5,9 @@ export interface IFitnessMachine {
 
   body_part: BodyPartModel;
 
-  finess_machine_imageurl: string;
+  fitness_machine_imageurl: string;
 
-  finess_machine_name: string;
+  fitness_machine_name: string;
 
-  finess_machine_notice: string;
+  fitness_machine_notice: string;
 }
