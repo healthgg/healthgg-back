@@ -36,10 +36,12 @@ export class FoodService {
   ) {
     let take = cursorPageOptionsDto?.take || 4;
 
-    if (!Object.values(NutrientEnum).includes(type)) {
-      throw new BadRequestException('존재 하지 않는 영양소');
+    console.log(type);
+    if (!Object.values(NutrientEnum).includes(type) && type !== 0) {
+      throw new BadRequestException('존재하지 않는 영양소');
     }
-    const [foods, total] = await this.foodRepository
+
+    const query = this.foodRepository
       .createQueryBuilder('food')
       .leftJoinAndSelect('food.nutrient', 'nutrient')
       .select([
@@ -56,10 +58,18 @@ export class FoodService {
         'nutrient.unit',
         'nutrient.mainNutrient',
       ])
-      .where(
-        'nutrient.mainNutrient = :mainNutrient AND food.food_id < :cursorId',
-        { mainNutrient: type, cursorId: cursorPageOptionsDto.cursorId },
-      )
+      .where('food.food_id < :cursorId', {
+        cursorId: cursorPageOptionsDto.cursorId,
+      });
+
+    if (type !== 0) {
+      // type이 0이 아닌 경우에만 mainNutrient 필터 적용
+      query.andWhere('nutrient.mainNutrient = :mainNutrient', {
+        mainNutrient: type,
+      });
+    }
+
+    const [foods, total] = await query
       .orderBy('food.food_id', 'DESC')
       .take(take)
       .getManyAndCount();
