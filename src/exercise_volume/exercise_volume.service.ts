@@ -39,6 +39,7 @@ export class ExerciseVolumeService {
     }
 
     //.map(async() 사용했는데 비동기 작업을 병렬적으로 처리하기 떄문에 await이 작동하지 않았음
+    // promiseall로 병렬처리
     for (const data of exerciseVolumeList) {
       data.description = JSON.parse(data?.description);
       const descriptionArr = data.description;
