@@ -129,6 +129,10 @@
 
 ---
 
+## ERD
+![drawSQL-image-export-2024-08-21](https://github.com/user-attachments/assets/cba3d591-d91d-4700-bee7-5d6c73e6ee93)
+
+---
 
 ## 📃개발 기간 및 작업 관리
 
