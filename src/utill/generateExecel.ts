@@ -38,13 +38,13 @@ export async function generateVolumeExcel(data) {
       'Z',
     ];
     for (let i = 0; i < data.length; i++) {
-      const col = columns[i]; // Get the current column letter
+      const col = columns[i];
 
-      worksheet.getCell(`${col}1`).value = data[i].fitness_machine_name; // B1, C1, D1, etc.
-      worksheet.getCell(`${col}2`).value = data[i].repetition; // B2, C2, D2, etc.
-      worksheet.getCell(`${col}3`).value = data[i].set; // B3, C3, D3, etc.
-      worksheet.getCell(`${col}4`).value = data[i].weight; // B4, C4, D4, etc.
-      worksheet.getCell(`${col}5`).value = `${data[i].total_weight} (kg)`; // B5, C5, D5, etc.
+      worksheet.getCell(`${col}1`).value = data[i].fitness_machine_name;
+      worksheet.getCell(`${col}2`).value = data[i].repetition;
+      worksheet.getCell(`${col}3`).value = data[i].set;
+      worksheet.getCell(`${col}4`).value = data[i].weight;
+      worksheet.getCell(`${col}5`).value = `${data[i].total_weight} (kg)`;
     }
   }
 
@@ -122,7 +122,7 @@ export async function generateFoodExcel(data) {
       { header: '칼로리 (g)', key: 'calory', width: 20 },
       { header: '단백질 (g)', key: 'protein', width: 20 },
       { header: '탄수화물 (g)', key: 'carbohydrate', width: 20 },
-      { header: 'fat (g)', key: 'fat', width: 20 },
+      { header: '지방 (g)', key: 'fat', width: 20 },
     ];
 
     const mealTimes = Object.keys(data);
@@ -170,21 +170,21 @@ export async function generateFoodExcel(data) {
     });
 
     const totalRow = worksheet.getRow(currentRow);
-    totalRow.getCell('A').value = 'Total'; // Set "Total" label
+    totalRow.getCell('A').value = 'Total';
     totalRow.getCell('C').value = {
-      formula: `SUM(C2:C${currentRow - 1}) & "(g)"`,
-      result: null, // Excel will compute this
+      formula: `SUM(C2:C${currentRow - 1})`,
+      result: null,
     };
     totalRow.getCell('D').value = {
-      formula: `SUM(D2:D${currentRow - 1})  & "(g)"`,
-      result: null, // Excel will compute this
+      formula: `SUM(D2:D${currentRow - 1})`,
+      result: null,
     };
     totalRow.getCell('E').value = {
-      formula: `SUM(E2:E${currentRow - 1})  & "(g)"`,
+      formula: `SUM(E2:E${currentRow - 1})`,
       result: null,
     };
     totalRow.getCell('F').value = {
-      formula: `SUM(F2:F${currentRow - 1})  & "(g)"`,
+      formula: `SUM(F2:F${currentRow - 1})`,
       result: null,
     };
 
@@ -222,6 +222,7 @@ export async function generateFoodExcel(data) {
 
     // 파일을 버퍼로 저장
     const buffer = await workbook.xlsx.writeBuffer();
+
     return buffer;
   }
 }

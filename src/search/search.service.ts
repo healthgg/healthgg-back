@@ -110,11 +110,11 @@ export class SearchService {
       });
 
       const hits = result.body.hits.hits;
+      console.log(hits);
       if (hits.length === 0) {
         throw new BadRequestException('검색 결과가 없습니다');
       }
 
-      console.log(hits);
       return hits.map((item) => ({
         finess_machine_name: item._source.finess_machine_name,
         finess_machine_imageurl: item._source.finess_machine_imageurl,
