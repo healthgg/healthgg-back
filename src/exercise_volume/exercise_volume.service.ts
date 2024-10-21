@@ -103,7 +103,7 @@ export class ExerciseVolumeService {
   public async postExerciseVolmes(body): Promise<void> {
     const post_id: string = generateRandomString(16);
     const { data } = body;
-    data.description = JSON.stringify(data.description);
+    data.description = JSON.stringify(data?.description);
     data.board_id = post_id;
     const exerciseEntity = this.exerciseVolumeBoardRepository.create(data);
     await this.exerciseVolumeBoardRepository.save(exerciseEntity);

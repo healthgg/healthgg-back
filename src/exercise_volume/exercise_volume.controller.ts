@@ -1,9 +1,6 @@
 import { Body, Controller, Get, Param, Post, Res } from '@nestjs/common';
 import { ExerciseVolumeService } from './exercise_volume.service';
-import {
-  CreateExerciseVolumeADto,
-  PostExerciseVolmeDto,
-} from './dto/create_exercise_volme.dto';
+import { CreateExerciseVolumeADto } from './dto/create_exercise_volme.dto';
 import { Response } from 'express';
 import { ExerciseVolumeBoardModel } from './entity/exercise_volume_board.entity';
 
@@ -11,7 +8,6 @@ import { ExerciseVolumeBoardModel } from './entity/exercise_volume_board.entity'
 export class ExerciseVolumeController {
   constructor(private readonly exerciseVolumeService: ExerciseVolumeService) {}
 
-  //고정된 경로를 먼저 선언
   @Get('best')
   public async getBestExerciseVolme(): Promise<ExerciseVolumeBoardModel[]> {
     const bestExerciseVolme: ExerciseVolumeBoardModel[] =
@@ -51,6 +47,5 @@ export class ExerciseVolumeController {
       'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
     );
     res.send(buffer);
-    //res.download(buffer); // 파일 다운로드
   }
 }
