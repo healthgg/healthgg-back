@@ -16,25 +16,25 @@ import { SearchService } from 'src/search/search.service';
 import { Response, Request } from 'express';
 import { foodExcelDto } from './dto/create_food_excel.dto';
 import { foodModel } from './entity/food.entity';
+import { CursorPageDto } from './cursor-page/cursor-page.dto';
+import { FoodBoardModel } from './entity/foodBoard.entity';
 
 @Controller('food')
 export class FoodController {
   constructor(private readonly foodService: FoodService) {}
 
   @Get('best')
-  public async getBestFoodList() {
-    return await this.foodService.getFoodBoardOrderbyViewCount();
+  public async getBestFoodList(
+    @Query() cursorPageOptionsDto: CursorPageOptionsDto,
+  ): Promise<CursorPageDto<FoodBoardModel>> {
+    return await this.foodService.getFoodBoardOrderbyViewCount(
+      cursorPageOptionsDto,
+    );
   }
 
   @Get(':type')
-  public async getFoodList(
-    @Param('type', ParseIntPipe) type: number,
-    @Query() cursorPageOptionsDto: CursorPageOptionsDto,
-  ) {
-    const result = await this.foodService.getFoodList(
-      cursorPageOptionsDto,
-      type,
-    );
+  public async getFoodList(@Param('type', ParseIntPipe) type: number) {
+    const result = await this.foodService.getFoodList(type);
     return result;
   }
 
@@ -42,7 +42,6 @@ export class FoodController {
   public async postFoodList(
     @Body() body: { data: CreateFoodDto },
   ): Promise<void> {
-    console.log(body.data);
     await this.foodService.postFoodListArray(body.data);
   }
 

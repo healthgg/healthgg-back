@@ -8,6 +8,8 @@ import {
   ConnectedSocket,
 } from '@nestjs/websockets';
 import { Server, Socket } from 'socket.io';
+import { MainService } from '../main/main.service';
+import { Injectable } from '@nestjs/common';
 
 @WebSocketGateway({
   namespace: 'maindata',
@@ -16,6 +18,7 @@ import { Server, Socket } from 'socket.io';
     methods: ['GET', 'POST'],
   },
 })
+@Injectable()
 export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect {
   @WebSocketServer()
   server: Server;
@@ -23,11 +26,12 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect {
   private rooms = new Map<string, string[]>(); // 방과 채팅 내역 저장
   private clientsCount: string[] = [];
 
-  handleConnection(client: any, ...args: any[]) {
+  constructor(private readonly mainService: MainService) {}
+  async handleConnection(client: any, ...args: any[]) {
     this.clientsCount.push(client.id);
     this.server.emit('clientsCount', this.clientsCount.length);
     console.log(`Client connected: ${client.id}`);
-    console.log(this.clientsCount.length);
+    await this.mainService.incrementVisitor();
   }
 
   handleDisconnect(client: any) {

@@ -22,11 +22,11 @@ import { visitor } from './entity/visitor.entity';
       visitor,
     ]),
     ExerciseVolumeModule,
-    EventsGateway,
     SearchModule,
     FoodModule,
   ],
   controllers: [MainController],
-  providers: [MainService, EventsGateway, FoodService],
+  providers: [MainService, FoodService],
+  exports: [MainService],
 })
 export class MainModule {}

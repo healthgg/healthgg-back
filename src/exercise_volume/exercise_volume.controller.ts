@@ -1,19 +1,22 @@
-import { Body, Controller, Get, Param, Post, Res } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Query, Res } from '@nestjs/common';
 import { ExerciseVolumeService } from './exercise_volume.service';
 import { CreateExerciseVolumeADto } from './dto/create_exercise_volme.dto';
 import { Response } from 'express';
 import { ExerciseVolumeBoardModel } from './entity/exercise_volume_board.entity';
+import { CursorPageOptionsDto } from 'src/food/cursor-page/cursor-page-option.dto';
+import { CursorPageDto } from 'src/food/cursor-page/cursor-page.dto';
 
 @Controller('exercise_volume')
 export class ExerciseVolumeController {
   constructor(private readonly exerciseVolumeService: ExerciseVolumeService) {}
 
   @Get('best')
-  public async getBestExerciseVolme(): Promise<ExerciseVolumeBoardModel[]> {
-    const bestExerciseVolme: ExerciseVolumeBoardModel[] =
-      await this.exerciseVolumeService.getExerciseVolmesOrderbyViewConut();
-
-    return bestExerciseVolme;
+  public async getBestExerciseVolme(
+    @Query() cursorPageOptionsDto: CursorPageOptionsDto,
+  ): Promise<CursorPageDto<ExerciseVolumeBoardModel>> {
+    return await this.exerciseVolumeService.getExerciseVolmesOrderbyViewConut(
+      cursorPageOptionsDto,
+    );
   }
 
   @Get('board/:post_id')

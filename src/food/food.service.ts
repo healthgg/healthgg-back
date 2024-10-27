@@ -1,4 +1,9 @@
-import { BadRequestException, Inject, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Inject,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { foodModel } from './entity/food.entity';
 import { Connection, getRepository, LessThan, Repository } from 'typeorm';
@@ -30,13 +35,9 @@ export class FoodService {
     private connection: Connection,
   ) {}
 
-  public async getFoodList(
-    cursorPageOptionsDto: CursorPageOptionsDto,
-    type: number,
-  ) {
-    let take = cursorPageOptionsDto?.take || 4;
+  public async getFoodList(type: number): Promise<foodModel[]> {
+    // 리턴 타입 변경
 
-    console.log(type);
     if (!Object.values(NutrientEnum).includes(type) && type !== 0) {
       throw new BadRequestException('존재하지 않는 영양소');
     }
@@ -57,54 +58,15 @@ export class FoodService {
         'nutrient.amount',
         'nutrient.unit',
         'nutrient.mainNutrient',
-      ])
-      .where('food.food_id < :cursorId', {
-        cursorId: cursorPageOptionsDto.cursorId,
-      });
+      ]);
 
     if (type !== 0) {
-      // type이 0이 아닌 경우에만 mainNutrient 필터 적용
       query.andWhere('nutrient.mainNutrient = :mainNutrient', {
         mainNutrient: type,
       });
     }
 
-    const [foods, total] = await query
-      .orderBy('food.food_id', 'DESC')
-      .take(take)
-      .getManyAndCount();
-
-    let hasNextData = true;
-    let cursor: number;
-    let firstDataWithNextCursor;
-
-    const takePerScroll = cursorPageOptionsDto.take;
-    const isLastScroll = total <= takePerScroll;
-    const lastDataPerScroll = foods[foods.length - 1];
-
-    const allFoods = await this.getAllFoods();
-
-    if (isLastScroll) {
-      hasNextData = false;
-      cursor = null;
-    } else {
-      cursor = lastDataPerScroll.food_id;
-      const lastDataPerPageIndexOf = allFoods.findIndex(
-        (data) => data.food_id === cursor,
-      );
-      firstDataWithNextCursor = allFoods[lastDataPerPageIndexOf - 1];
-
-      foods.push(firstDataWithNextCursor);
-    }
-
-    const cursorPageMetaDto = new CursorPageMetaDto({
-      cursorPageOptionsDto,
-      total,
-      hasNextData,
-      cursor,
-    });
-
-    return new CursorPageDto(foods, cursorPageMetaDto);
+    return await query.getMany();
   }
 
   public async getAllFoods(take?: number | null) {
@@ -229,32 +191,49 @@ export class FoodService {
     return foodBoardList;
   }
 
-  public async getFoodBoardOrderbyViewCount(): Promise<FoodBoardModel[]> {
-    const meals = ['Breakfast', 'Lunch', 'Dinner'];
-    const foodBoardList = await this.foodboardRepository.find({
-      order: {
-        viewCount: 'DESC',
-      },
-    });
+  public async getFoodBoardOrderbyViewCount(
+    cursorPageOptionsDto: CursorPageOptionsDto,
+  ): Promise<CursorPageDto<FoodBoardModel>> {
+    const take = cursorPageOptionsDto.take || 8;
+    const query = this.foodboardRepository
+      .createQueryBuilder('food_board')
+      .orderBy('food_board.viewCount', 'DESC')
+      .take(take);
 
-    if (foodBoardList.length === 0 || !foodBoardList) {
-      throw new BadRequestException('게시글이 없습니다.');
+    if (cursorPageOptionsDto.cursorId) {
+      query.andWhere('food_Board_id < :cursorId', {
+        cursorId: cursorPageOptionsDto.cursorId,
+      });
     }
-    foodBoardList.map((data) => {
-      data.description = JSON.parse(data.description);
-    });
+
+    const [foodBoardList, total] = await query.getManyAndCount();
+
+    if (foodBoardList.length === 0) {
+      throw new NotFoundException('게시글이 없습니다.');
+    }
+
+    const lastItem = foodBoardList[foodBoardList.length - 1];
+    const hasNextData = total > foodBoardList.length;
+    const cursor = hasNextData ? lastItem.food_Board_id : null;
 
     for (const food of foodBoardList) {
       const foodImageArr = [];
-      for (const meal of meals) {
-        for (let i = 0; i < food.description[meal].length; i++) {
-          const foodImage = food.description[meal][i].food_imageurl;
-          foodImageArr.push(foodImage);
+      for (const meal of ['Breakfast', 'Lunch', 'Dinner']) {
+        const description = JSON.parse(food.description);
+        for (const item of description[meal]) {
+          foodImageArr.push(item.food_imageurl);
         }
       }
       food.food_imageurl = foodImageArr;
     }
 
-    return foodBoardList;
+    const cursorPageMetaDto = new CursorPageMetaDto({
+      cursorPageOptionsDto,
+      total,
+      hasNextData,
+      cursor,
+    });
+
+    return new CursorPageDto(foodBoardList, cursorPageMetaDto);
   }
 }

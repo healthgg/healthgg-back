@@ -18,7 +18,6 @@ export class MainController {
     //const food: foodModel[] = await this.foodService.getAllFoods(4);
     const foodBoardList = await this.foodService.getFoodBoardList();
     const totalvistor: number = await this.mainService.getTotlaVisitor();
-    await this.mainService.incrementVisitor();
 
     return { totalvistor, foodBoardList, exerciseVolume };
   }
