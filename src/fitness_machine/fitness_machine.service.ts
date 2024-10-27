@@ -26,17 +26,18 @@ export class FitnessMachineService {
     private readonly searchService: SearchService,
   ) {}
 
+  //
+
   public async getFitnessMachineList(
-    cursorPageOptionsDto: CursorPageOptionsDto,
     type: number,
-  ): Promise<CursorPageDto<FitnessMachineModel>> {
-    let take = cursorPageOptionsDto?.take || 4;
+  ): Promise<FitnessMachineModel[]> {
+    // 리턴 타입 변경
 
     if (type !== 0 && !Object.values(BodyPartEnum).includes(type)) {
       throw new BadRequestException('존재하지 않는 운동부위');
     }
 
-    let query = this.fitnessMachineRepository
+    const query = this.fitnessMachineRepository
       .createQueryBuilder('fitness_machine')
       .leftJoinAndSelect('fitness_machine.body_part', 'body_part')
       .select([
@@ -46,55 +47,15 @@ export class FitnessMachineService {
         'fitness_machine.fitness_machine_notice',
         'body_part.body_part_id',
         'body_part.body_part_type',
-      ])
-      .where('fitness_machine.fitness_machine_id < :cursorId', {
-        cursorId: cursorPageOptionsDto.cursorId,
-      });
+      ]);
 
-    //body type이 1~5로 들어오면 운동부위별 조회
     if (type !== 0) {
-      query = query.andWhere('body_part.body_part_type = :body_part_type', {
+      query.andWhere('body_part.body_part_type = :body_part_type', {
         body_part_type: type,
       });
     }
 
-    const [machines, total] = await query
-      .orderBy('fitness_machine.fitness_machine_id', 'DESC')
-      .take(take)
-      .getManyAndCount();
-
-    let hasNextData = true;
-    let cursor: number;
-    let firstDataWithNextCursor;
-
-    const takePerScroll = cursorPageOptionsDto.take;
-    const isLastScroll = total <= takePerScroll;
-    const lastDataPerScroll = machines[machines.length - 1];
-    const allFitnessMachine = await this.getAllFitnessMachines();
-
-    console.log(allFitnessMachine);
-
-    if (isLastScroll) {
-      hasNextData = false;
-      cursor = null;
-    } else {
-      cursor = lastDataPerScroll.fitness_machine_id;
-      const lastDataPerPageIndexOf = allFitnessMachine.findIndex(
-        (data) => data.fitness_machine_id === cursor,
-      );
-      firstDataWithNextCursor = allFitnessMachine[lastDataPerPageIndexOf - 1];
-
-      machines.push(firstDataWithNextCursor);
-    }
-
-    const cursorPageMetaDto = new CursorPageMetaDto({
-      cursorPageOptionsDto,
-      total,
-      hasNextData,
-      cursor,
-    });
-
-    return new CursorPageDto(machines, cursorPageMetaDto);
+    return await query.getMany();
   }
 
   public async getAllFitnessMachines() {

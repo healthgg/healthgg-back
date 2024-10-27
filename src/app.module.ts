@@ -1,5 +1,4 @@
 import { Module } from '@nestjs/common';
-import { EventsGateway } from './gateway/events.gateway';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
 import { FitnessMachineModule } from './fitness_machine/fitness_machine.module';
@@ -9,9 +8,9 @@ import { NutrientModule } from './nutrient/nutrient.module';
 import { ExerciseVolumeModule } from './exercise_volume/exercise_volume.module';
 import { MainModule } from './main/main.module';
 import { CacheModule } from '@nestjs/cache-manager';
-//import { RedisModule } from '@liaoliaots/nestjs-redis';
 import { SearchModule } from './search/search.module';
 import { ScheduleModule } from '@nestjs/schedule';
+import { GatewayModule } from './gateway/events.gateway.module';
 @Module({
   imports: [
     ScheduleModule.forRoot(),
@@ -39,8 +38,9 @@ import { ScheduleModule } from '@nestjs/schedule';
     ExerciseVolumeModule,
     MainModule,
     SearchModule,
+    GatewayModule,
   ],
   controllers: [],
-  providers: [EventsGateway],
+  providers: [],
 })
 export class AppModule {}

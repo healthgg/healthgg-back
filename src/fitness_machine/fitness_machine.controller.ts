@@ -19,12 +19,8 @@ export class FitnessMachineController {
   @Get(':type')
   public async getFitnessMachine(
     @Param('type', ParseIntPipe) type: number,
-    @Query() cursorPageOptionsDto: CursorPageOptionsDto,
-  ): Promise<CursorPageDto<FitnessMachineModel>> {
-    const result = await this.fitnessService.getFitnessMachineList(
-      cursorPageOptionsDto,
-      type,
-    );
+  ): Promise<FitnessMachineModel[]> {
+    const result = await this.fitnessService.getFitnessMachineList(type);
 
     return result;
   }
