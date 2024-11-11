@@ -13,13 +13,13 @@ import { IFitnessMachine } from '../interface/fitness_machine.interface';
 import { ExerciseVolumeModel } from 'src/exercise_volume/entity/exercise_volume.entity';
 
 @Entity('fitness_machine')
-@Index('IDX_BODY_PART', ['body_part_id']) // body_part 인덱스
 export class FitnessMachineModel implements IFitnessMachine {
   @PrimaryColumn({ comment: '헬스 기구 ID' })
   fitness_machine_id: number;
 
   @ManyToOne(() => BodyPartModel, (bodyPart) => bodyPart.fitnessMachines)
   @JoinColumn({ name: 'body_part_id' }) // 외래 키 컬럼 이름을 명시적으로 지정
+  @Index('IDX_BODY_PART')
   body_part: BodyPartModel;
 
   @OneToMany(
