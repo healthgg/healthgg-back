@@ -25,6 +25,7 @@ export class FitnessMachineController {
     return result;
   }
 
+  // 1
   @Get()
   public async getgetFitnessMachineSearch(@Query() search) {
     return await this.fitnessService.searchFitnessMachine(search);
