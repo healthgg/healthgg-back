@@ -19,6 +19,7 @@ export class FitnessMachineModel implements IFitnessMachine {
 
   @ManyToOne(() => BodyPartModel, (bodyPart) => bodyPart.fitnessMachines)
   @JoinColumn({ name: 'body_part_id' }) // 외래 키 컬럼 이름을 명시적으로 지정
+  // 인덱스
   @Index('IDX_BODY_PART')
   body_part: BodyPartModel;
 
